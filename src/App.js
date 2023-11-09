@@ -8,13 +8,15 @@ import {
 import { BoardWrite } from "./page/BoardWrite";
 import { BoardList } from "./page/BoardList";
 import { HomeLayout } from "./layout/HomeLayout";
+import { BoardView } from "./page/BoardView";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
+    /* 공통 UI */
     <Route path="/" element={<HomeLayout />}>
-      /* 공통 UI */
       <Route index element={<BoardList />} /> {/* 게시판 목록 */}
       <Route path="write" element={<BoardWrite />} /> {/* 글 작성 컴포넌트 */}
+      <Route path="board/:id" element={<BoardView />} />
     </Route>,
   ),
 );
