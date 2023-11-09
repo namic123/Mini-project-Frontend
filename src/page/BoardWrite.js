@@ -9,6 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function BoardWrite() {
   /* 게시물 작성 컴포넌트*/
@@ -17,7 +18,8 @@ export function BoardWrite() {
   const [writer, setWriter] = useState(""); // 작성자 상태
   const [isSubmitting, setIsSubmitting] = useState(false); // 버튼 로딩 상태
 
-  const toast = useToast(); // 게시물 저장 팝업 ㅊ
+  const toast = useToast(); // 게시물 저장 팝업
+  const navigate = useNavigate();
 
   function handleSubmit() {
     setIsSubmitting(true); // 버튼 로딩, 값이 true인 동안 로딩
@@ -31,6 +33,7 @@ export function BoardWrite() {
       })
       .then(() => {
         toast({ description: "새 글이 저장되었습니다.", status: "success" }); // 글 저장이 성공한 경우 반환
+        navigate("/");
       })
       .catch((error) => {
         // 실패한 경우 응답 코드 및 메세지 toast
