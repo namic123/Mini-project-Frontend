@@ -14,7 +14,7 @@ const routes = createBrowserRouter(
     <Route path="/" element={<HomeLayout />}>
       /* 공통 UI */
       <Route index element={<BoardList />} /> {/* 게시판 목록 */}
-      <Route path="wirte" element={<BoardWrite />} /> {/* 글 작성 컴포넌트 */}
+      <Route path="write" element={<BoardWrite />} /> {/* 글 작성 컴포넌트 */}
     </Route>,
   ),
 );

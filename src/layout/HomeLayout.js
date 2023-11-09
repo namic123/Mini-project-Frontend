@@ -1,5 +1,7 @@
 import React from "react";
-import { NavBar } from "./NavBar";
+import { NavBar } from "../component/NavBar";
+import { Box } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
 
 export function HomeLayout() {
   return (

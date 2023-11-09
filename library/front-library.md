@@ -1,15 +1,15 @@
 # front 설치 라이브러리
-* 터미널 설치
-* axios
+* ## 터미널 설치
+* ## axios
   * npm i axios 
-* react-router-dom
+* ## react-router-dom
   * npm i react-router-dom
-* immer 
+* ## immer 
   * npm i use-immer
   * npm i immer
-* Chakra UI 
+* ## Chakra UI 
   * npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
   * 아이콘 설치
     * npm i @chakra-ui/icons
-* prettier
+* ## prettier
   * nmp i prettier
