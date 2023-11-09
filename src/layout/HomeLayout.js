@@ -7,7 +7,7 @@ export function HomeLayout() {
   return (
     <>
       <Box>
-        <NavBar />
+        <NavBar /> {/* 네비게이션 바 - 공통 UI */}
         <Outlet /> {/* 하위 라우터의 컴포넌트 */}
       </Box>
     </>

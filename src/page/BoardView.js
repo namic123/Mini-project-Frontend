@@ -23,7 +23,7 @@ import {
 export function BoardView() {
   const [board, setBoard] = useState(null); // board 상태 관리
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure(); // 모달 사용 함수
 
   const { id } = useParams();
   let toast = useToast();
@@ -41,7 +41,7 @@ export function BoardView() {
     return <Spinner />;
   }
 
-  // 삭제 메서드
+  // 삭제 요청 메서드
   function handleDelete() {
     axios
       .delete("/api/board/remove/" + id)
