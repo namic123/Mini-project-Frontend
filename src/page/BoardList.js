@@ -14,14 +14,17 @@ import { useNavigate } from "react-router-dom";
 
 export function BoardList() {
   const [boardList, setBoardList] = useState(null);
-  let navigate = useNavigate();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get("/api/board/list")
       .then((response) => setBoardList(response.data));
   }, []);
-
+  if (boardList === null) {
+    return <Spinner />;
+  }
   return (
     <Box>
       <h1>게시물 목록</h1>
@@ -36,27 +39,20 @@ export function BoardList() {
             </Tr>
           </Thead>
           <Tbody>
-            {boardList === null ? (
-              <Spinner />
-            ) : (
-              boardList.map((board) => (
-                <Tr
-                  _hover={{
-                    // 포인터
-                    cursor: "pointer",
-                  }}
-                  // 인덱스에 키 부여
-                  key={board.id}
-                  // 클릭시 해당 글 view로 이동
-                  onClick={() => navigate("/board/" + board.id)}
-                >
-                  <Td>{board.id}</Td>
-                  <Td>{board.title}</Td>
-                  <Td>{board.writer}</Td>
-                  <Td>{board.inserted}</Td>
-                </Tr>
-              ))
-            )}
+            {boardList.map((board) => (
+              <Tr
+                _hover={{
+                  cursor: "pointer",
+                }}
+                key={board.id}
+                onClick={() => navigate("/board/" + board.id)}
+              >
+                <Td>{board.id}</Td>
+                <Td>{board.title}</Td>
+                <Td>{board.writer}</Td>
+                <Td>{board.inserted}</Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </Box>
