@@ -6,6 +6,7 @@
   * npm i react-router-dom
 * immer 
   * npm i use-immer
+  * npm i immer
 * Chakra UI 
   * npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion
   * 아이콘 설치
