@@ -29,33 +29,38 @@ export function BoardView() {
   let toast = useToast();
   let navigate = useNavigate();
 
+  // Board id로 해당 레코드 요청
   useEffect(() => {
     axios
       .get("/api/board/id/" + id)
-      .then((response) => setBoard(response.data));
+      .then((response) => setBoard(response.data)); // Board의 상태 업데이트
   }, []);
 
+  // 게시물을 가지고 오지 못한 경우, 로딩
   if (board === null) {
     return <Spinner />;
   }
 
+  // 삭제 메서드
   function handleDelete() {
     axios
       .delete("/api/board/remove/" + id)
       .then((response) => {
         toast({
+          // 성공한 경우
           description: id + "번 게시물이 삭제되었습니다.",
           status: "success",
         });
-        navigate("/");
+        navigate("/"); // 경로 이동 - 메인 페이지
       })
       .catch((error) => {
+        // 오류가 발생한 경우
         toast({
           description: "삭제 중 문제가 발생하였습니다.",
           status: "error",
         });
       })
-      .finally(() => onClose()); // 모달 창 닫기
+      .finally(() => onClose()); // 최종적으로 모달 창 닫기
   }
 
   return (
