@@ -58,7 +58,7 @@ export function MemberSignup() {
         navigate("/");
       })
       .catch((error) => {
-        if (error.status.status === 400) {
+        if (error.response.status === 400) {
           toast({
             description: "입력값을 확인해주세요.",
             status: "error",
@@ -69,8 +69,7 @@ export function MemberSignup() {
             status: "error",
           });
         }
-      })
-      .finally(() => console.log("done"));
+      });
   }
 
   function handleIdCheck() {
