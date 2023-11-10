@@ -18,8 +18,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-
-const { isOpen, onOpen, onClose } = useDisclosure();
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useImmer } from "use-immer";
@@ -31,8 +29,8 @@ export function BoardEdit() {
   // /edit/:id
   const { id } = useParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  let toast = useToast();
-
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useEffect(() => {
     axios
       .get("/api/board/id/" + id)
@@ -116,15 +114,26 @@ export function BoardEdit() {
       {isSubmitting === true ? (
         <Spinner />
       ) : (
-        <Button
-          isDisabled={isSubmitting}
-          colorScheme={"blue"}
-          onClick={handleSubmit}
-        >
+        <Button isDisabled={isSubmitting} colorScheme={"blue"} onClick={onOpen}>
           저장
         </Button>
       )}
-
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>게시글 수정</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>게시글을 수정하시겠습니까?</ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={handleSubmit}>
+              수정
+            </Button>
+            <Button colorScheme="red" mr={3} onClick={onClose}>
+              닫기
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Button onClick={() => navigate(-1)}>취소</Button>
     </Box>
   );
