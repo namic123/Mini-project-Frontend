@@ -28,6 +28,17 @@ export function BoardEdit() {
     return <Spinner />;
   }
 
+  function handleSubmit() {
+    // 저장 버튼 클릭 시
+    // PUT -> /api/board/edit
+    // board
+    axios
+      .put("/api/board/edit", board)
+      .then(() => console.log("잘됨"))
+      .catch(() => console.log)
+      .finally(() => console.log("끝"));
+  }
+
   return (
     <Box>
       <h1>{id}번 글 수정</h1>
@@ -64,7 +75,9 @@ export function BoardEdit() {
           }
         />
       </FormControl>
-      <Button>저장</Button>
+      <Button colorScheme={"blue"} onClick={handleSubmit}>
+        저장
+      </Button>
       <Button onClick={() => navigate(-1)}>취소</Button>
     </Box>
   );
