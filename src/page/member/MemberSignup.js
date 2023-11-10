@@ -18,6 +18,7 @@ export function MemberSignup() {
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, setEmail] = useState("");
   const toast = useToast();
+  const [emailAvailable, setEmailAvailable] = useState(false);
 
   // 중복 여부 체크를 위한 상태
   // true인 경우가 중복 값이 없음을 뜻함
@@ -29,6 +30,9 @@ export function MemberSignup() {
 
   // id가 중복된 경우
   if (!idAvailable) {
+    submitAvailable = false;
+  }
+  if (!emailAvailable) {
     submitAvailable = false;
   }
   // 비밀번호 동일 여부 체크
@@ -79,6 +83,29 @@ export function MemberSignup() {
       });
   }
 
+  function handleEmailCheck() {
+    const params = new URLSearchParams();
+    params.set("email", email);
+    axios
+      .get("/api/member/check?" + params)
+      .then(() => {
+        setEmailAvailable(false);
+        toast({
+          description: "이미 사용중인 email입니다.",
+          status: "warning",
+        });
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          setEmailAvailable(true);
+          toast({
+            description: "사용 가능한 email입니다",
+            status: "success",
+          });
+        }
+      });
+  }
+
   return (
     <Box>
       <h1>회원 가입</h1>
@@ -115,13 +142,18 @@ export function MemberSignup() {
         />
         <FormErrorMessage>암호가 다릅니다.</FormErrorMessage>
       </FormControl>
-      <FormControl>
+      <FormControl isInvalid={!emailAvailable}>
         <FormLabel>email</FormLabel>
         <Input
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailAvailable(false);
+          }}
         />
+        <Button onClick={handleEmailCheck}>중복체크</Button>
+        <FormErrorMessage>email 중복 체크를 해주세요</FormErrorMessage>
       </FormControl>
       <Button
         isDisabled={!submitAvailable}
