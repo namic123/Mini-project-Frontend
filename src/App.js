@@ -17,13 +17,20 @@ const routes = createBrowserRouter(
   createRoutesFromElements(
     /* 공통 UI */
     <Route path="/" element={<HomeLayout />}>
-      <Route index element={<BoardList />} /> {/* 게시판 목록 */}
-      <Route path="write" element={<BoardWrite />} /> {/* 글 작성 컴포넌트 */}
-      {/* 글 보기 컴포넌트 */}
-      <Route path="board/:id" element={<BoardView />} />{" "}
-      <Route path="edit/:id" element={<BoardEdit />}></Route>
-      <Route path="signup" element={<MemberSignup />} />
-      <Route path="mamber/list" element={<MemberList />} />
+      {/* 게시판 라우터 */}
+      {/* 게시판 목록 */}
+      <Route index element={<BoardList />} />
+      {/* 게시글 작성 컴포넌트 */}
+      <Route path="write" element={<BoardWrite />} />{" "}
+      {/* 게시글 보기 컴포넌트 */}
+      <Route path="board/:id" element={<BoardView />} />
+      {/* 게시글 수정 컴포넌트 */}
+      <Route path="edit/:id" element={<BoardEdit />}></Route>{" "}
+      {/* 회원관리 라우터 */}
+      {/* 회원 가입 컴포넌트 */}
+      <Route path="signup" element={<MemberSignup />} />{" "}
+      {/* 회원 목록 컴포넌트 */}
+      <Route path="member/list" element={<MemberList />} />{" "}
     </Route>,
   ),
 );

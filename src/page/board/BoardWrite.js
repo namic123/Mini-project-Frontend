@@ -18,13 +18,16 @@ export function BoardWrite() {
   const [writer, setWriter] = useState(""); // 작성자 상태
   const [isSubmitting, setIsSubmitting] = useState(false); // 버튼 로딩 상태
 
-  const toast = useToast(); // 게시물 저장 팝업
+  /* Chakra UI */
+  const toast = useToast();
   const navigate = useNavigate();
 
+  /* 게시글 작성 컴포넌트 */
   function handleSubmit() {
-    setIsSubmitting(true); // 버튼 로딩, 값이 true인 동안 로딩
+    /* 버튼 로딩, 값이 true인 동안 로딩 */
+    setIsSubmitting(true);
 
-    // /api/board/add로 post 전송
+    /* 저장 요청 */
     axios
       .post("/api/board/add", {
         title,
@@ -32,11 +35,11 @@ export function BoardWrite() {
         writer,
       })
       .then(() => {
-        toast({ description: "새 글이 저장되었습니다.", status: "success" }); // 글 저장이 성공한 경우 반환
+        toast({ description: "새 글이 저장되었습니다.", status: "success" });
+        /* 성공 후, 홈 화면으로 이동 */
         navigate("/");
       })
       .catch((error) => {
-        // 실패한 경우 응답 코드 및 메세지 toast
         if (error.response.status === 400) {
           // 400번오류
           toast({
@@ -50,6 +53,7 @@ export function BoardWrite() {
           });
         }
       })
+      /* 로딩 상태 해제 */
       .finally(() => setIsSubmitting(false));
   }
 

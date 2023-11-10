@@ -20,28 +20,38 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+/* 게시글 보기 컴포넌트 */
 export function BoardView() {
-  const [board, setBoard] = useState(null); // board 상태 관리
+  /* 게시글 상태 */
+  const [board, setBoard] = useState(null);
 
-  const { isOpen, onOpen, onClose } = useDisclosure(); // 모달 사용 함수
+  /* 모달 창 사용을 위한 함수 */
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
+  /* url에 지정된 매개변수의 값을 추출 */
+  /* 예: http://localhost:3000/board/id" id -> 13을 추출 */
+  /* path에는 board/:id 이와 같이 선언되어 있어야 한다. */
   const { id } = useParams();
+
+  /* Chakra UI */
   let toast = useToast();
   let navigate = useNavigate();
 
-  // Board id로 해당 레코드 요청
+  /* board 엔티티의 값 요청 */
+  /* 글의 저장된 값을 불러오기 위함 */
   useEffect(() => {
     axios
       .get("/api/board/id/" + id)
-      .then((response) => setBoard(response.data)); // Board의 상태 업데이트
+      /* 요청 성공 */
+      .then((response) => setBoard(response.data));
   }, []);
 
-  // 게시물을 가지고 오지 못한 경우, 로딩
+  /* 게시물을 가지고 오지 못한 경우, 로딩 */
   if (board === null) {
     return <Spinner />;
   }
 
-  // 삭제 요청 메서드
+  /* 삭제 요청 메서드 */
   function handleDelete() {
     axios
       .delete("/api/board/remove/" + id)
@@ -69,6 +79,7 @@ export function BoardView() {
         <h1>글 보기</h1>
         <FormControl>
           <FormLabel>제목</FormLabel>
+          {/* 수정 불가하도록 읽기 전용 */}
           <Input value={board.title} readOnly />
         </FormControl>
 
@@ -85,16 +96,17 @@ export function BoardView() {
           <Input value={board.inserted} readOnly />
         </FormControl>
 
+        {/* 수정 컴포넌트로 이동 */}
         <Button colorScheme={"blue"} onClick={() => navigate("/edit/" + id)}>
           수정
         </Button>
 
+        {/* 삭제 모달 팝업 */}
         <Button colorScheme={"red"} onClick={onOpen}>
           삭제
         </Button>
 
-        {/*삭제 모달 - Chackra UI*/}
-
+        {/* 삭제 모달 - Chackra UI */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>

@@ -1,6 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
+/* 공통 UI - 네비게이션 바 */
 export function NavBar() {
   const navigate = useNavigate();
 
