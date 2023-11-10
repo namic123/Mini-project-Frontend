@@ -5,11 +5,12 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { BoardWrite } from "./page/BoardWrite";
-import { BoardList } from "./page/BoardList";
+import { BoardWrite } from "./page/board/BoardWrite";
+import { BoardList } from "./page/board/BoardList";
 import { HomeLayout } from "./layout/HomeLayout";
-import { BoardView } from "./page/BoardView";
-import { BoardEdit } from "./page/BoardEdit";
+import { BoardView } from "./page/board/BoardView";
+import { BoardEdit } from "./page/board/BoardEdit";
+import { MemberSignup } from "./page/member/MemberSignup";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const routes = createBrowserRouter(
       {/* 글 보기 컴포넌트 */}
       <Route path="board/:id" element={<BoardView />} />{" "}
       <Route path="edit/:id" element={<BoardEdit />}></Route>
+      <Route path="signup" element={<MemberSignup />} />
     </Route>,
   ),
 );
