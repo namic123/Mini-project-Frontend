@@ -111,13 +111,10 @@ export function BoardEdit() {
 
       {/*게시물 수정 버튼*/}
       {/* 요청이 완료되기 전까지 로딩 */}
-      {isSubmitting === true ? (
-        <Spinner />
-      ) : (
-        <Button isDisabled={isSubmitting} colorScheme={"blue"} onClick={onOpen}>
-          저장
-        </Button>
-      )}
+
+      <Button isDisabled={isSubmitting} colorScheme={"blue"} onClick={onOpen}>
+        저장
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -125,9 +122,13 @@ export function BoardEdit() {
           <ModalCloseButton />
           <ModalBody>게시글을 수정하시겠습니까?</ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" onClick={handleSubmit}>
-              수정
-            </Button>
+            {isSubmitting === true ? (
+              <Spinner />
+            ) : (
+              <Button colorScheme="blue" onClick={handleSubmit}>
+                수정
+              </Button>
+            )}
             <Button colorScheme="red" mr={3} onClick={onClose}>
               닫기
             </Button>
