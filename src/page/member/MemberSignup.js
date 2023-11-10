@@ -13,28 +13,34 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export function MemberSignup() {
+  // 회원 폼 상태 관리
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, setEmail] = useState("");
 
+  // 중복 체크 상태
   const [idAvailable, setIdAvailable] = useState(false);
   const [emailAvailable, setEmailAvailable] = useState(false);
 
   const toast = useToast();
-
   const navigate = useNavigate();
 
+  // 제출 조건 충족 여부
+  // true인 경우, 제출 가능 상태
   let submitAvailable = true;
 
+  // 이메일 중복 또는 체크하지 않은 경우 제출 불가
   if (!emailAvailable) {
     submitAvailable = false;
   }
 
+  // 아이디 중복 또는 체크하지 않은 경우 제출 불가
   if (!idAvailable) {
     submitAvailable = false;
   }
 
+  // 비밀번호와 검증 폼이 같지 않은 경우 제출 불가
   if (password != passwordCheck) {
     submitAvailable = false;
   }
