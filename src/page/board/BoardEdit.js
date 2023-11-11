@@ -31,17 +31,17 @@ export function BoardEdit() {
   /* react-router-dom, 다른 페이지로 이동 시키는 훅 */
   const navigate = useNavigate();
 
-  /* url에 지정된 매개변수의 값을 추출 */
-  /* 예: http://localhost:3000/edit/13 -> 13을 추출 */
-  /* path에는 edit/:id, 이와 같이 선언되어 있어야 한다. */
+  /* url에 지정된 매개변수의 값을 추출
+  예: http://localhost:3000/edit/13 -> 13을 추출
+  path에는 edit/:id, 이와 같이 선언되어 있어야 한다. */
   const { id } = useParams();
 
   /* Chakra UI의 메서드 */
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  /* board 엔티티의 값 요청 */
-  /* 수정할 글의 저장된 값을 불러오기 위함 */
+  /* board 엔티티의 값 요청
+  수정할 글의 저장된 값을 불러오기 위함 */
   useEffect(() => {
     axios
       .get("/api/board/id/" + id)

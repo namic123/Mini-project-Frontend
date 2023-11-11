@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 /* 게시판 리스트 컴포넌트 */
 export function BoardList() {
-  /* board의 상태 */
+  /* 게시글 리스트의 상태 */
   const [boardList, setBoardList] = useState(null);
 
   /* Chakra UI */
@@ -27,7 +27,7 @@ export function BoardList() {
       .then((response) => setBoardList(response.data)); // 리스트 상태 업데이트
   }, []);
 
-  /* 리스트 값이 비어있는 경우 로딩 화면 */
+  /* 게시글 리스트 값이 비어있는 경우 로딩 화면 */
   if (boardList === null) {
     return <Spinner />;
   }
@@ -45,7 +45,7 @@ export function BoardList() {
             </Tr>
           </Thead>
           <Tbody>
-            {/* 각 리스트 출력 */}
+            {/* 게시글 리스트 출력 */}
             {boardList.map((board) => (
               <Tr
                 _hover={{
