@@ -25,10 +25,12 @@ export function MemberSignup() {
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
   const [email, setEmail] = useState("");
+  const [nickName, setNickName] = useState("");
 
   // 중복 체크 상태
   const [idAvailable, setIdAvailable] = useState(false);
   const [emailAvailable, setEmailAvailable] = useState(false);
+  const [nickNameAvailable, setNickNameAvailable] = useState(false);
 
   // Chakra UI toast 사용 - 팝업
   const toast = useToast();
@@ -40,13 +42,17 @@ export function MemberSignup() {
   // true인 경우, 제출 가능 상태
   let submitAvailable = true;
 
+  // 아이디 중복 또는 체크하지 않은 경우 제출 불가
+  if (!idAvailable) {
+    submitAvailable = false;
+  }
+
   // 이메일 중복 또는 체크하지 않은 경우 제출 불가
   if (!emailAvailable) {
     submitAvailable = false;
   }
-
-  // 아이디 중복 또는 체크하지 않은 경우 제출 불가
-  if (!idAvailable) {
+  // 닉네임 중복 또는 체크하지 않은 경우 제출 불가
+  if (!nickNameAvailable) {
     submitAvailable = false;
   }
 
@@ -66,6 +72,7 @@ export function MemberSignup() {
       .post("/api/member/signup", {
         id,
         password,
+        nickName,
         email,
       })
       .then(() => {
@@ -94,7 +101,7 @@ export function MemberSignup() {
       });
   }
 
-  // ID 중복 체크 검증
+  /* ID 중복 체크 검증 */
   function handleIdCheck() {
     /* Query String을 관리하기 위한 객체 생성 */
     const searchParam = new URLSearchParams();
@@ -136,7 +143,7 @@ export function MemberSignup() {
     axios
       .get("/api/member/check?" + params) // Query String을 붙여서 get 요청 전송
       .then(() => {
-        setEmailAvailable(false); // false: email폼 조건 불충족
+        setEmailAvailable(false); // false: email폼 조건 불충족(이미 존재하는 email)
         toast({
           description: "이미 사용 중인 email입니다.",
           status: "warning",
@@ -144,10 +151,35 @@ export function MemberSignup() {
       })
       .catch((error) => {
         if (error.response.status === 404) {
-          // 존재하지 않는 데이터 이므로 404(클라이언트 오류)를 반환
-          setEmailAvailable(true); // true : ID 폼 조건 만족
+          /* 존재하지 않는 데이터 이므로 404(클라이언트 오류)를 반환 */
+          setEmailAvailable(true); // true : email 폼 조건 만족
           toast({
             description: "사용 가능한 email입니다.",
+            status: "success",
+          });
+        }
+      });
+  }
+  /* 닉네임 중복체크 */
+  function handleNickNameCheck() {
+    const params = new URLSearchParams();
+    params.set("nickName", nickName);
+
+    axios
+      .get("/api/member/check?" + params)
+      .then(() => {
+        setNickNameAvailable(false); /* 이미 존재하는 nick name일 경우*/
+        toast({
+          description: "사용중인 닉네임입니다.",
+          status: "warning",
+        });
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          /* 존재하지 않는 데이터 이므로 404(클라이언트 오류)를 반환 */
+          setNickNameAvailable(true); /* true : nickname 폼 조건 만족 */
+          toast({
+            description: "사용 가능한 nickname입니다.",
             status: "success",
           });
         }
@@ -175,7 +207,21 @@ export function MemberSignup() {
         </Flex>
         <FormErrorMessage>ID 중복체크를 해주세요.</FormErrorMessage>
       </FormControl>
-
+      {/* 닉네임 폼 */}
+      <FormControl isInvalid={!nickNameAvailable}>
+        <FormLabel>닉네임</FormLabel>
+        <Flex>
+          <Input
+            value={nickName}
+            onChange={(e) => {
+              setNickNameAvailable(false);
+              setNickName(e.target.value);
+            }}
+          />
+          <Button onClick={handleNickNameCheck}>중복체크</Button>
+        </Flex>
+        <FormErrorMessage>nick name 중복 체크를 해주세요.</FormErrorMessage>
+      </FormControl>
       {/* 비밀번호 폼 */}
       {/* 값이 비어있는 경우, 에러메세지 출력 */}
       <FormControl isInvalid={password.length === 0}>
@@ -200,7 +246,6 @@ export function MemberSignup() {
         />
         <FormErrorMessage>암호가 다릅니다.</FormErrorMessage>
       </FormControl>
-
       {/* 이메일 폼 */}
       {/* 이메일 중복 체크 여부 검증 */}
       <FormControl isInvalid={!emailAvailable}>

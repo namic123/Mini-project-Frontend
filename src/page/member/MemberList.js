@@ -43,6 +43,7 @@ export function MemberList() {
           <Thead>
             <Tr>
               <Th>id</Th>
+              <Th>nick name</Th>
               <Th>pw</Th>
               <Th>email</Th>
               <Th>inserted</Th>
@@ -58,6 +59,7 @@ export function MemberList() {
                 key={member.id}
               >
                 <Td>{member.id}</Td>
+                <Td>{member.nickName}</Td>
                 <Td>{member.password}</Td>
                 <Td>{member.email}</Td>
                 <Td>{member.inserted}</Td>

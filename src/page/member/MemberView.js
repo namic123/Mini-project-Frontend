@@ -71,6 +71,7 @@ export function MemberView() {
             status: "error",
           });
         } else {
+          /* 서버 에러 */
           toast({
             description: "탈퇴 처리 중에 문제가 발생하였습니다.",
             status: "error",
@@ -85,6 +86,10 @@ export function MemberView() {
       <Box>
         <h1>{member.id}님 정보</h1>
         <FormControl>
+          <FormLabel>nick name</FormLabel>
+          <Input value={member.nickName} readOnly />
+        </FormControl>
+        <FormControl>
           <FormLabel>password</FormLabel>
           <Input type={"text"} value={member.password} readOnly />
         </FormControl>
@@ -92,6 +97,7 @@ export function MemberView() {
           <FormLabel>email</FormLabel>
           <Input value={member.email} readOnly />
         </FormControl>
+
         {/* 회원 수정 경로로 이동 */}
         <Button
           colorScheme="blue"
