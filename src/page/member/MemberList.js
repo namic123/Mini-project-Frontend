@@ -28,6 +28,8 @@ export function MemberList() {
   if (memberList === null) {
     return <Spinner />;
   }
+  /* 각 회원 정보를 보여주는 view로 이동 */
+  /* 경로 이동 시 해당 회원의 id도 넘겨줌. */
   function handleTableRowClick(id) {
     const params = new URLSearchParams();
     params.set("id", id);
@@ -50,6 +52,8 @@ export function MemberList() {
             {/* 회원 목록 출력 */}
             {memberList.map((member) => (
               <Tr
+                _hover={{ cursor: "pointer" }}
+                // onClick 시 회원 id를 전달
                 onClick={() => handleTableRowClick(member.id)}
                 key={member.id}
               >
