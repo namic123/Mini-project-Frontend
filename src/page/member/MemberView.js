@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -92,7 +92,15 @@ export function MemberView() {
           <FormLabel>email</FormLabel>
           <Input value={member.email} readOnly />
         </FormControl>
-        <Button colorScheme="blue">수정</Button>
+        {/* 회원 수정 경로로 이동 */}
+        <Button
+          colorScheme="blue"
+          onClick={() => {
+            navigate("/member/edit?" + params.toString());
+          }}
+        >
+          수정
+        </Button>
         <Button colorScheme="red" onClick={onOpen}>
           탈퇴
         </Button>
