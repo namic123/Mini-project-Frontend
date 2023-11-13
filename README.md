@@ -1,4 +1,10 @@
-# React mini-project
+# mini-project-frontend - based by React
+## Libraries
+* react-router-dom
+* axios
+* immer
+* ChakraUI
+* prettier
 
 ## About project configuration
 ### Bulletin Board
