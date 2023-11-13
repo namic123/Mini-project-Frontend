@@ -32,7 +32,7 @@ export function MemberEdit() {
   const [passwordCheck, setPasswordCheck] = useState("");
   /* nickName 상태, 중복 상태 */
   const [nickName, setNickName] = useState("");
-  const [nickNameAvailable, setNickNameAvailable] = useState("");
+  const [nickNameAvailable, setNickNameAvailable] = useState(false);
 
   /* 현재 페이지의 query string 가져오기 */
   const [params] = useSearchParams();
@@ -53,6 +53,7 @@ export function MemberEdit() {
       setMember(response.data);
       /* 이메일 중복 확인을 위한 세팅 */
       setEmail(response.data.email);
+      /* 닉네임 중복 확인을 위한 세팅 */
       setNickName(response.data.nickName);
     });
   }, []);
@@ -68,6 +69,8 @@ export function MemberEdit() {
     sameOriginNickName = member.nickName === nickName;
   }
 
+  /* 둘 중 하나라도 true이면, 수정 버튼 활성화 */
+  /* 기존 이메일 or 닉네임이 같거나, 값 변경 후 중복 체크를 했거나 */
   let emailChecked = sameOriginEmail || emailAvailable;
   let nickNameChecked = sameOriginNickName || nickNameAvailable;
 

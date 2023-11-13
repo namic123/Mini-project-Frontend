@@ -218,6 +218,7 @@ export function MemberSignup() {
               setNickName(e.target.value);
             }}
           />
+          {/* 중복 검증 */}
           <Button onClick={handleNickNameCheck}>중복체크</Button>
         </Flex>
         <FormErrorMessage>nick name 중복 체크를 해주세요.</FormErrorMessage>

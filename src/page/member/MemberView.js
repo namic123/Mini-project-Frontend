@@ -85,14 +85,17 @@ export function MemberView() {
     <>
       <Box>
         <h1>{member.id}님 정보</h1>
+        {/* 닉네임 폼 */}
         <FormControl>
           <FormLabel>nick name</FormLabel>
           <Input value={member.nickName} readOnly />
         </FormControl>
+        {/* 비밀번호 폼 */}
         <FormControl>
           <FormLabel>password</FormLabel>
           <Input type={"text"} value={member.password} readOnly />
         </FormControl>
+        {/* 이메일 폼 */}
         <FormControl>
           <FormLabel>email</FormLabel>
           <Input value={member.email} readOnly />
@@ -121,6 +124,7 @@ export function MemberView() {
 
             <ModalFooter>
               <Button onClick={onClose}>닫기</Button>
+              {/* 회원 탈퇴 버튼 */}
               <Button onClick={handleDelete} colorScheme="red">
                 탈퇴
               </Button>
