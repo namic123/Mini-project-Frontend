@@ -92,7 +92,7 @@ export function MemberView() {
           <FormLabel>email</FormLabel>
           <Input value={member.email} readOnly />
         </FormControl>
-        <Button colorScheme="blue" >수정</Button>
+        <Button colorScheme="blue">수정</Button>
         <Button colorScheme="red" onClick={onOpen}>
           탈퇴
         </Button>
