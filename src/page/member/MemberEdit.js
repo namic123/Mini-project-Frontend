@@ -65,6 +65,7 @@ export function MemberEdit() {
     return <Spinner />;
   }
 
+  /* 이메일 중복 체크 요청 */
   function handleEmailCheck() {
     const params = new URLSearchParams();
     params.set("email", email);
@@ -89,6 +90,15 @@ export function MemberEdit() {
       });
   }
 
+  /* 수정 제출 요청 */
+  function handleSubmit() {
+    axios.put("/api/member/edit", {
+      id: member.id,
+      password,
+      email,
+    });
+  }
+
   return (
     <Box>
       <h1>{id}님 정보 수정</h1>
@@ -101,6 +111,7 @@ export function MemberEdit() {
         />
       </FormControl>
 
+      {/* password의 입력값이 있을 경우에만 출력 */}
       {password.length > 0 && (
         <FormControl>
           <FormLabel>password 확인</FormLabel>
@@ -129,7 +140,11 @@ export function MemberEdit() {
           </Button>
         </Flex>
       </FormControl>
-      <Button isDisabled={!emailChecked || !passwordChecked} colorScheme="blue">
+      <Button
+        isDisabled={!emailChecked || !passwordChecked}
+        colorScheme="blue"
+        onClick={handleSubmit}
+      >
         수정
       </Button>
     </Box>
