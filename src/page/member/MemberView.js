@@ -52,7 +52,7 @@ export function MemberView() {
   /* 홈 화면 경로 이동 */
   function handleDelete() {
     axios
-      .delete("/api/member?" + params.toString)
+      .delete("/api/member?" + params.toString())
       .then(() => {
         /* 성공 값 */
         toast({
@@ -92,21 +92,23 @@ export function MemberView() {
           <FormLabel>email</FormLabel>
           <Input value={member.email} readOnly />
         </FormControl>
-        <Button colorScheme="blue">수정</Button>
-        <Button colorScheme="red">탈퇴</Button>
+        <Button colorScheme="blue" >수정</Button>
+        <Button colorScheme="red" onClick={onOpen}>
+          탈퇴
+        </Button>
 
         {/* 탈퇴 모달 - Chackra UI */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>탈퇴 확인</ModalHeader>
-            <ModalCloseButton></ModalCloseButton>
+            <ModalCloseButton />
             <ModalBody>탈퇴 하시겠습니까?</ModalBody>
+
             <ModalFooter>
               <Button onClick={onClose}>닫기</Button>
-              {/* 회원 탈퇴 버튼 */}
               <Button onClick={handleDelete} colorScheme="red">
-                탈퇴하기
+                탈퇴
               </Button>
             </ModalFooter>
           </ModalContent>
