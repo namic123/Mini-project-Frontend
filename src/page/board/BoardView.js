@@ -19,7 +19,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { LoginContext } from "../../App";
+import { LoginContext } from "../../component/LogInProvider";
 
 /* 게시글 보기 컴포넌트 */
 export function BoardView() {

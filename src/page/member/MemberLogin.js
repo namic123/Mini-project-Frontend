@@ -10,7 +10,8 @@ import {
 import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { LoginContext } from "../../App";
+import { LoginContext } from "../../component/LogInProvider";
+
 export function MemberLogin() {
   /* 아이디 */
   const [id, setId] = useState("");
