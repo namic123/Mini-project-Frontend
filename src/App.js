@@ -53,7 +53,7 @@ function App(props) {
   useEffect(() => {
     fetchLogin();
   }, []);
-
+  console.log(login);
   function fetchLogin() {
     axios.get("/api/member/login").then((response) => setLogin(response.data));
   }
