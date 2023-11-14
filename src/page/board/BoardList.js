@@ -38,10 +38,10 @@ export function BoardList() {
         <Table>
           <Thead>
             <Tr>
-              <Th>id</Th>
-              <Th>title</Th>
-              <Th>by</Th>
-              <Th>at</Th>
+              <Th>아이디</Th>
+              <Th>제목</Th>
+              <Th>작성자</Th>
+              <Th>생성날짜</Th>
             </Tr>
           </Thead>
           <Tbody>
