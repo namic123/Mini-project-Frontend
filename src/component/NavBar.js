@@ -26,12 +26,23 @@ export function NavBar() {
 
   return (
     <Flex>
+      {/* 로그인 상태에 따른 버튼 출력 */}
+      {/* 로그인 상태 isAuthenticated() && */}
+      {/* 비로그인 상태 isAuthenticated() || */}
       <Button onClick={() => navigate("/")}>홈</Button>
-      <Button onClick={() => navigate("/write")}>글 쓰기</Button>
-      <Button onClick={() => navigate("/signup")}>회원 가입</Button>
-      <Button onClick={() => navigate("/member/list")}>회원 목록</Button>
-      <Button onClick={() => navigate("/login")}>로그인</Button>
-      <Button onClick={handleLogout}>로그아웃</Button>
+      {isAuthenticated() && (
+        <Button onClick={() => navigate("/write")}>글 쓰기</Button>
+      )}
+      {isAuthenticated() || (
+        <Button onClick={() => navigate("/signup")}>회원 가입</Button>
+      )}
+      {isAuthenticated() && (
+        <Button onClick={() => navigate("/member/list")}>회원 목록</Button>
+      )}
+      {isAuthenticated() || (
+        <Button onClick={() => navigate("/login")}>로그인</Button>
+      )}
+      {isAuthenticated() && <Button onClick={handleLogout}>로그아웃</Button>}
     </Flex>
   );
 }
