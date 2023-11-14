@@ -57,11 +57,20 @@ function App(props) {
   function fetchLogin() {
     axios.get("/api/member/login").then((response) => setLogin(response.data));
   }
+
+  /* 로그인 여부 확인 메서드 */
   function isAuthenticated() {
     return login !== "";
   }
+
+  /* 권한 확인 메서드 */
+  function hasAccess(userId) {
+    return login.id === userId;
+  }
   return (
-    <LoginContext.Provider value={{ login, fetchLogin, isAuthenticated }}>
+    <LoginContext.Provider
+      value={{ login, fetchLogin, isAuthenticated, hasAccess }}
+    >
       <RouterProvider router={routes} />;
     </LoginContext.Provider>
   );

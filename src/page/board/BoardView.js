@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -19,6 +19,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { LoginContext } from "../../App";
 
 /* 게시글 보기 컴포넌트 */
 export function BoardView() {
@@ -32,6 +33,9 @@ export function BoardView() {
   /* 예: http://localhost:3000/board/id" id -> 13을 추출 */
   /* path에는 board/:id 이와 같이 선언되어 있어야 한다. */
   const { id } = useParams();
+
+  /* 권한 여부 확인 메서드, prop drilling */
+  const { hasAccess } = useContext(LoginContext);
 
   /* Chakra UI */
   let toast = useToast();
@@ -96,16 +100,20 @@ export function BoardView() {
           <Input value={board.inserted} readOnly />
         </FormControl>
 
-        {/* 수정 컴포넌트로 이동 */}
-        <Button colorScheme={"blue"} onClick={() => navigate("/edit/" + id)}>
-          수정
-        </Button>
-
-        {/* 삭제 모달 팝업 */}
-        <Button colorScheme={"red"} onClick={onOpen}>
-          삭제
-        </Button>
-
+        {/* board.writer와 로그인 id와 동일할 경우에만 출력 */}
+        {hasAccess(board.writer) && (
+          <Box>
+            <Button
+              colorScheme={"blue"}
+              onClick={() => navigate("/edit/" + id)}
+            >
+              수정
+            </Button>
+            <Button colorScheme={"red"} onClick={onOpen}>
+              삭제
+            </Button>
+          </Box>
+        )}
         {/* 삭제 모달 - Chackra UI */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
