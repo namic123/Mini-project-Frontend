@@ -1,20 +1,44 @@
 /* 로그인 컴포넌트 */
-import { Box, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  useToast,
+} from "@chakra-ui/react";
+import { useContext, useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../App";
 export function MemberLogin() {
   /* 아이디 */
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const toast = useToast();
+  const { fetchLogin } = useContext(LoginContext);
 
   function handleLogin() {
     // TODO: 로그인 성공, 실패, 완료 코드 추가
     axios
       .post("/api/member/login", { id, password })
-      .then(() => console.log("good"))
-      .catch(() => console.log("bad"))
-      .finally(() => console.log("done"));
+      .then(() => {
+        toast({
+          description: "로그인 되었습니다.",
+          status: "info",
+        });
+        navigate("/");
+      })
+      .catch(() => {
+        toast({
+          description: "아이디와 암호를 다시 입력해주세요",
+          status: "warning",
+        });
+      })
+      .finally(() => {
+        fetchLogin();
+      });
   }
 
   return (
