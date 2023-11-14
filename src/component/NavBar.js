@@ -6,7 +6,8 @@ import { LoginContext } from "../App";
 
 /* 공통 UI - 네비게이션 바 */
 export function NavBar() {
-  const { fetchLogin, login, isAuthenticated } = useContext(LoginContext);
+  const { fetchLogin, login, isAuthenticated, isAdmin } =
+    useContext(LoginContext);
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -36,7 +37,8 @@ export function NavBar() {
       {isAuthenticated() || (
         <Button onClick={() => navigate("/signup")}>회원 가입</Button>
       )}
-      {isAuthenticated() && (
+      {/* 관리자 권한이 있을 경우 */}
+      {isAdmin() && (
         <Button onClick={() => navigate("/member/list")}>회원 목록</Button>
       )}
       {isAuthenticated() || (
