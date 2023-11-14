@@ -78,7 +78,6 @@ export function BoardWrite() {
               onChange={(e) => setContent(e.target.value)}
             ></Textarea>
           </FormControl>
-          <FormControl>
           <Button
             isDisabled={isSubmitting}
             onClick={handleSubmit}

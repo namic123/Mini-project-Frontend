@@ -115,19 +115,6 @@ export function BoardEdit() {
           }
         />
       </FormControl>
-      {/* 작성자 폼 */}
-      <FormControl>
-        <FormLabel>작성자</FormLabel>
-        <Input
-          value={board.writer}
-          onChange={(e) =>
-            updateBoard((draft) => {
-              draft.writer = e.target.value;
-            })
-          }
-        />
-      </FormControl>
-
       {/* 게시물 수정 모달창 팝업 버튼*/}
       <Button colorScheme={"blue"} onClick={onOpen}>
         저장
