@@ -40,7 +40,14 @@ export function MemberView() {
     axios
       /* /api/member?id=*/
       .get("/api/member?" + params.toString())
-      .then((response) => setMember(response.data));
+      .then((response) => setMember(response.data))
+      .catch((error) => {
+        toast({
+          description: "권한이 없습니다.",
+          status: "warning",
+        });
+        navigate("/login");
+      });
   }, []);
 
   /* member 객체가 비어있는 경우 */
