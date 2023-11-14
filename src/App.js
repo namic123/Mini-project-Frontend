@@ -14,6 +14,7 @@ import { MemberSignup } from "./page/member/MemberSignup";
 import { MemberList } from "./page/member/MemberList";
 import { MemberView } from "./page/member/MemberView";
 import { MemberEdit } from "./page/member/MemberEdit";
+import { MemberLogin } from "./page/member/MemberLogin";
 
 const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +38,8 @@ const routes = createBrowserRouter(
       <Route path="member" element={<MemberView />} />
       {/* 회원 수정 컴포넌트 */}
       <Route path="member/edit" element={<MemberEdit />} />
+      {/* 로그인 컴포넌트 */}
+      <Route path="login" element={<MemberLogin />}></Route>
     </Route>,
   ),
 );

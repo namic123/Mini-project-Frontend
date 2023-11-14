@@ -15,7 +15,6 @@ export function BoardWrite() {
   /* 게시물 작성 컴포넌트*/
   const [title, setTitle] = useState(""); // 제목 상태
   const [content, setContent] = useState(""); // 본문 상태
-  const [writer, setWriter] = useState(""); // 작성자 상태
   const [isSubmitting, setIsSubmitting] = useState(false); // 버튼 로딩 상태
 
   /* Chakra UI */
@@ -32,7 +31,6 @@ export function BoardWrite() {
       .post("/api/board/add", {
         title,
         content,
-        writer,
       })
       .then(() => {
         toast({ description: "새 글이 저장되었습니다.", status: "success" });
@@ -81,15 +79,6 @@ export function BoardWrite() {
             ></Textarea>
           </FormControl>
           <FormControl>
-            {/* 작성자 폼 */}
-            <FormLabel>작성자</FormLabel>
-            {/* 작성자 상태 저장 */}
-            <Input
-              value={writer}
-              onChange={(e) => setWriter(e.target.value)}
-            ></Input>
-          </FormControl>
-
           <Button
             isDisabled={isSubmitting}
             onClick={handleSubmit}
