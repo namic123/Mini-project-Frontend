@@ -35,7 +35,7 @@ export function BoardView() {
   const { id } = useParams();
 
   /* 권한 여부 확인 메서드, prop drilling */
-  const { hasAccess } = useContext(LoginContext);
+  const { hasAccess, isAdmin } = useContext(LoginContext);
 
   /* Chakra UI */
   let toast = useToast();
@@ -101,7 +101,7 @@ export function BoardView() {
         </FormControl>
 
         {/* board.writer와 로그인 id와 동일할 경우에만 출력 */}
-        {hasAccess(board.writer) && (
+        {(hasAccess(board.writer) || isAdmin()) && (
           <Box>
             <Button
               colorScheme={"blue"}
