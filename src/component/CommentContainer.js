@@ -6,13 +6,21 @@ import {
   CardHeader,
   Flex,
   Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
   StackDivider,
   Text,
   Textarea,
+  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DeleteIcon } from "@chakra-ui/icons";
 
@@ -33,7 +41,7 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   );
 }
 
-function CommentList({ commentList, onDelete, isSubmitting }) {
+function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
   return (
     <Card>
       <CardHeader>
@@ -55,7 +63,7 @@ function CommentList({ commentList, onDelete, isSubmitting }) {
                   isDisabled={isSubmitting}
                   size={"xs"}
                   colorScheme="red"
-                  onClick={() => onDelete(comment.id)}
+                  onClick={() => onDeleteModalOpen(comment.id)}
                 >
                   <DeleteIcon />
                 </Button>
@@ -75,20 +83,11 @@ export function CommentContainer({ boardId }) {
   /* 댓글 리스트 상태 */
   const [commentList, setCommentList] = useState([]);
 
-  const toast = useToast();
-  function handleDelete(id) {
-    setIsSubmitting(true);
+  const [id, setId] = useState(0);
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
-    axios
-      .delete("/api/comment/remove/" + id)
-      .then(
-        toast({
-          description: "댓글이 삭제되었습니다.",
-          status: "success",
-        }),
-      )
-      .finally(() => setIsSubmitting(false));
-  }
+  const toast = useToast();
+
   useEffect(() => {
     if (!isSubmitting) {
       const params = new URLSearchParams();
@@ -103,11 +102,32 @@ export function CommentContainer({ boardId }) {
   function handleSubmit(comment) {
     setIsSubmitting(true);
 
-    axios
-      .post("/api/comment/add", comment)
-      .finally(() => setIsSubmitting(false));
+    axios.post("/api/comment/add", comment).finally(() => {
+      setIsSubmitting(false);
+    });
   }
 
+  function handleDelete() {
+    setIsSubmitting(true);
+
+    axios
+      .delete("/api/comment/remove/" + id)
+      .then(
+        toast({
+          description: "댓글이 삭제되었습니다.",
+          status: "success",
+        }),
+      )
+      .finally(() => {
+        setIsSubmitting(false);
+        onClose();
+      });
+  }
+
+  function handleDeleteModalOpen(id) {
+    setId(id);
+    onOpen();
+  }
   return (
     <Box>
       <CommentForm
@@ -119,8 +139,27 @@ export function CommentContainer({ boardId }) {
         boardId={boardId}
         isSubmitting={isSubmitting}
         commentList={commentList}
-        onDelete={handleDelete}
+        onDeleteModalOpen={handleDeleteModalOpen}
       />
+      {/* 삭제 모달 - Chackra UI */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>삭제 확인</ModalHeader>
+          <ModalCloseButton></ModalCloseButton>
+          <ModalBody>삭제 하시겠습니까?</ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>닫기</Button>
+            <Button
+              isDisabled={isSubmitting}
+              onClick={handleDelete}
+              colorScheme="red"
+            >
+              삭제하기
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
