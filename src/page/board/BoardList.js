@@ -52,7 +52,7 @@ export function BoardList() {
                   cursor: "pointer",
                 }}
                 key={board.id}
-                onClick={() => navigate("/board/" + board.id)} // 게시글 선택 시 해당 글의 VIEW로 이동
+                onClick={() => navigate("/board/" + board.id)}
               >
                 <Td>{board.id}</Td>
                 <Td>{board.title}</Td>

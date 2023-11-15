@@ -53,7 +53,7 @@ export function BoardEdit() {
     return <Spinner />;
   }
 
-  /* 제출 메서드 */
+  /* 게시글 수정 제출 */
   function handleSubmit() {
     /* 게시글 수정 요청 */
     axios

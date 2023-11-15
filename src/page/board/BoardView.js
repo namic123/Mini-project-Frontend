@@ -20,6 +20,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { LoginContext } from "../../component/LogInProvider";
+import { CommentContainer } from "../../component/CommentContainer";
 
 /* 게시글 보기 컴포넌트 */
 export function BoardView() {
@@ -129,6 +130,8 @@ export function BoardView() {
             </ModalFooter>
           </ModalContent>
         </Modal>
+        {/* 댓글 */}
+        <CommentContainer boardId={id} />
       </Box>
     </>
   );

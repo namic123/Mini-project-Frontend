@@ -11,6 +11,10 @@ export function NavBar() {
   const toast = useToast();
   const navigate = useNavigate();
 
+  const urlParams = new URLSearchParams();
+  if (login !== "") {
+    urlParams.set("id", login.id);
+  }
   function handleLogout() {
     // TODO: 로그아웃 후 할 일 추가
     axios
@@ -31,9 +35,12 @@ export function NavBar() {
       {/* 로그인 상태 isAuthenticated() && */}
       {/* 비로그인 상태 isAuthenticated() || */}
       <Button onClick={() => navigate("/")}>홈</Button>
+
+      {/* 글 쓰기 */}
       {isAuthenticated() && (
         <Button onClick={() => navigate("/write")}>글 쓰기</Button>
       )}
+      {/* 회원 가입 */}
       {isAuthenticated() || (
         <Button onClick={() => navigate("/signup")}>회원 가입</Button>
       )}
@@ -41,9 +48,17 @@ export function NavBar() {
       {isAdmin() && (
         <Button onClick={() => navigate("/member/list")}>회원 목록</Button>
       )}
+      {/* 로그인 계정의 회원 정보 경로 */}
+      {isAuthenticated() && (
+        <Button onClick={() => navigate("/member?" + urlParams.toString())}>
+          회원 정보
+        </Button>
+      )}
+      {/* 로그인 */}
       {isAuthenticated() || (
         <Button onClick={() => navigate("/login")}>로그인</Button>
       )}
+      {/* 로그아웃 */}
       {isAuthenticated() && <Button onClick={handleLogout}>로그아웃</Button>}
     </Flex>
   );

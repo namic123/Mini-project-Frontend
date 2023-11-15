@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
 
 export const LoginContext = createContext(null);
+/* props로 App.js를 받음 */
 function LogInProvider({ children }) {
   const [login, setLogin] = useState("");
 
@@ -23,7 +24,7 @@ function LogInProvider({ children }) {
 
   /* 관리자 권한 검증 여부 */
   function isAdmin() {
-    /* login.auth는 객체이지만, 조건에 사용하면 null 여부를 확인 */
+    /* login.auth는 객체이지만, javascript에서 객체를 조건에 사용하면 null 여부를 확인 */
     if (login.auth) {
       /* 로그인 속성 auth 객체에 name property 값이 admin인지 확인 */
       return login.auth.some((elem) => elem.name === "admin");
