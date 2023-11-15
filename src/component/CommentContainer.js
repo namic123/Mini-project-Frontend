@@ -106,9 +106,23 @@ export function CommentContainer({ boardId }) {
   function handleSubmit(comment) {
     setIsSubmitting(true);
 
-    axios.post("/api/comment/add", comment).finally(() => {
-      setIsSubmitting(false);
-    });
+    axios
+      .post("/api/comment/add", comment)
+      .then(() => {
+        toast({
+          description: "댓글이 등록되었습니다.",
+          status: "success",
+        });
+      })
+      .catch((error) => {
+        toast({
+          description: "댓글 등록 중 오류가 발생하였습니다.",
+          status: "error",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   function handleDelete() {
@@ -122,6 +136,19 @@ export function CommentContainer({ boardId }) {
           status: "success",
         }),
       )
+      .catch((error) => {
+        if (error.response.status === 401 || error.response.status === 403) {
+          toast({
+            description: "권한이 없습니다.",
+            status: "warning",
+          });
+        } else {
+          toast({
+            description: "댓글 삭제 중 문제가 발생했습니다.",
+            status: "error",
+          });
+        }
+      })
       .finally(() => {
         setIsSubmitting(false);
         onClose();
