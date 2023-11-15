@@ -5,6 +5,8 @@ import {
   CardBody,
   CardHeader,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   Modal,
   ModalBody,
@@ -22,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LogInProvider";
 
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
@@ -42,7 +44,12 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   );
 }
 
-function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
+function CommentList({
+  commentList,
+  onEditModalOpen,
+  onDeleteModalOpen,
+  isSubmitting,
+}) {
   const { hasAccess } = useContext(LoginContext);
   return (
     <Card>
@@ -62,14 +69,24 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
                   {comment.comment}
                 </Text>
                 {hasAccess(comment.memberId) && (
-                  <Button
-                    isDisabled={isSubmitting}
-                    size={"xs"}
-                    colorScheme="red"
-                    onClick={() => onDeleteModalOpen(comment.id)}
-                  >
-                    <DeleteIcon />
-                  </Button>
+                  <Flex>
+                    <Button
+                      isDisabled={isSubmitting}
+                      colorScheme="blue"
+                      size={"xs"}
+                      onClick={() => onEditModalOpen(comment.id)}
+                    >
+                      <EditIcon />
+                    </Button>
+                    <Button
+                      isDisabled={isSubmitting}
+                      size={"xs"}
+                      colorScheme="red"
+                      onClick={() => onDeleteModalOpen(comment.id)}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </Flex>
                 )}
               </Flex>
             </Box>
@@ -86,12 +103,20 @@ export function CommentContainer({ boardId }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   /* 댓글 리스트 상태 */
   const [commentList, setCommentList] = useState([]);
-
+  const [commentContent, setCommentContent] = useState("");
+  /* Chakra UI */
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { isAuthenticated } = useContext(LoginContext);
+  const updateOpen = useDisclosure();
   const toast = useToast();
+
+  /* 로그인 여부 Context */
+  const { isAuthenticated } = useContext(LoginContext);
   // const [id, setId] = useState(0);
+
+  /* 댓글 id(PK) 참조 */
   const commentIdRef = useRef(0);
+
+  /* 댓글 리스트 요청 */
   useEffect(() => {
     if (!isSubmitting) {
       const params = new URLSearchParams();
@@ -103,6 +128,7 @@ export function CommentContainer({ boardId }) {
     }
   }, [isSubmitting]);
 
+  /* 댓글 등록 */
   function handleSubmit(comment) {
     setIsSubmitting(true);
 
@@ -154,13 +180,38 @@ export function CommentContainer({ boardId }) {
         onClose();
       });
   }
-
+  function handleUpdate() {
+    setIsSubmitting(true);
+    axios
+      .put(
+        "/api/comment/edit/" +
+          commentIdRef.current +
+          "/content/" +
+          commentContent,
+      )
+      .then(() => {
+        toast({
+          description: "댓글이 수정되었습니다.",
+          status: "success",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        updateOpen.onClose();
+      });
+  }
   function handleDeleteModalOpen(id) {
     // setId(id);
     // useRef : 컴포넌트에서 임시로 값을 저장하는 용도로 사용
     commentIdRef.current = id;
     onOpen();
   }
+
+  function handleEditModalOpen(id) {
+    commentIdRef.current = id;
+    updateOpen.onOpen();
+  }
+
   return (
     <Box>
       {/* 댓글 입력 폼 */}
@@ -179,7 +230,36 @@ export function CommentContainer({ boardId }) {
         isSubmitting={isSubmitting}
         commentList={commentList}
         onDeleteModalOpen={handleDeleteModalOpen}
+        onEditModalOpen={handleEditModalOpen}
       />
+      {/* 수정 모달 - Chackra UI */}
+      <Modal isOpen={updateOpen.isOpen} onClose={updateOpen.onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>댓글 수정</ModalHeader>
+          <ModalCloseButton></ModalCloseButton>
+          <ModalBody>
+            <FormControl>
+              <FormLabel>수정할 내용</FormLabel>
+              <textarea
+                onChange={(e) => {
+                  setCommentContent(e.target.value);
+                }}
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              isDisabled={isSubmitting}
+              onClick={handleUpdate}
+              colorScheme="blue"
+            >
+              수정하기
+            </Button>
+            <Button onClick={onClose}>닫기</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       {/* 삭제 모달 - Chackra UI */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
