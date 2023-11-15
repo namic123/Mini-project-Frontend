@@ -20,9 +20,10 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { LoginContext } from "./LogInProvider";
 
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
   const [comment, setComment] = useState("");
@@ -42,6 +43,7 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
 }
 
 function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
+  const { hasAccess } = useContext(LoginContext);
   return (
     <Card>
       <CardHeader>
@@ -59,14 +61,16 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
                 <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
                   {comment.comment}
                 </Text>
-                <Button
-                  isDisabled={isSubmitting}
-                  size={"xs"}
-                  colorScheme="red"
-                  onClick={() => onDeleteModalOpen(comment.id)}
-                >
-                  <DeleteIcon />
-                </Button>
+                {hasAccess(comment.memberId) && (
+                  <Button
+                    isDisabled={isSubmitting}
+                    size={"xs"}
+                    colorScheme="red"
+                    onClick={() => onDeleteModalOpen(comment.id)}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                )}
               </Flex>
             </Box>
           ))}
@@ -85,7 +89,7 @@ export function CommentContainer({ boardId }) {
 
   const [id, setId] = useState(0);
   const { isOpen, onClose, onOpen } = useDisclosure();
-
+  const { isAuthenticated } = useContext(LoginContext);
   const toast = useToast();
 
   useEffect(() => {
@@ -130,11 +134,13 @@ export function CommentContainer({ boardId }) {
   }
   return (
     <Box>
-      <CommentForm
-        boardId={boardId}
-        isSubmitting={isSubmitting}
-        onSubmit={handleSubmit}
-      />
+      {isAuthenticated() && (
+        <CommentForm
+          boardId={boardId}
+          isSubmitting={isSubmitting}
+          onSubmit={handleSubmit}
+        />
+      )}
       <CommentList
         boardId={boardId}
         isSubmitting={isSubmitting}
