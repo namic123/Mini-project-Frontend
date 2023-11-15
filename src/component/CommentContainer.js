@@ -10,9 +10,11 @@ import {
   StackDivider,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
   const [comment, setComment] = useState("");
@@ -31,7 +33,7 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   );
 }
 
-function CommentList({ commentList }) {
+function CommentList({ commentList, onDelete, isSubmitting }) {
   return (
     <Card>
       <CardHeader>
@@ -45,9 +47,19 @@ function CommentList({ commentList }) {
                 <Heading size="xs">{comment.memberId}</Heading>
                 <Text fontSize="xs">{comment.inserted}</Text>
               </Flex>
-              <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
-                {comment.comment}
-              </Text>
+              <Flex justifyContent="space-between">
+                <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
+                  {comment.comment}
+                </Text>
+                <Button
+                  isDisabled={isSubmitting}
+                  size={"xs"}
+                  colorScheme="red"
+                  onClick={() => onDelete(comment.id)}
+                >
+                  <DeleteIcon />
+                </Button>
+              </Flex>
             </Box>
           ))}
         </Stack>
@@ -63,6 +75,20 @@ export function CommentContainer({ boardId }) {
   /* 댓글 리스트 상태 */
   const [commentList, setCommentList] = useState([]);
 
+  const toast = useToast();
+  function handleDelete(id) {
+    setIsSubmitting(true);
+
+    axios
+      .delete("/api/comment/remove/" + id)
+      .then(
+        toast({
+          description: "댓글이 삭제되었습니다.",
+          status: "success",
+        }),
+      )
+      .finally(() => setIsSubmitting(false));
+  }
   useEffect(() => {
     if (!isSubmitting) {
       const params = new URLSearchParams();
@@ -89,7 +115,12 @@ export function CommentContainer({ boardId }) {
         isSubmitting={isSubmitting}
         onSubmit={handleSubmit}
       />
-      <CommentList boardId={boardId} commentList={commentList} />
+      <CommentList
+        boardId={boardId}
+        isSubmitting={isSubmitting}
+        commentList={commentList}
+        onDelete={handleDelete}
+      />
     </Box>
   );
 }
