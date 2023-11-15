@@ -20,7 +20,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LogInProvider";
@@ -87,11 +87,11 @@ export function CommentContainer({ boardId }) {
   /* 댓글 리스트 상태 */
   const [commentList, setCommentList] = useState([]);
 
-  const [id, setId] = useState(0);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { isAuthenticated } = useContext(LoginContext);
   const toast = useToast();
-
+  // const [id, setId] = useState(0);
+  const commentIdRef = useRef(0);
   useEffect(() => {
     if (!isSubmitting) {
       const params = new URLSearchParams();
@@ -115,7 +115,7 @@ export function CommentContainer({ boardId }) {
     setIsSubmitting(true);
 
     axios
-      .delete("/api/comment/remove/" + id)
+      .delete("/api/comment/remove/" + commentIdRef.current)
       .then(
         toast({
           description: "댓글이 삭제되었습니다.",
@@ -129,11 +129,15 @@ export function CommentContainer({ boardId }) {
   }
 
   function handleDeleteModalOpen(id) {
-    setId(id);
+    // setId(id);
+    // useRef : 컴포넌트에서 임시로 값을 저장하는 용도로 사용
+    commentIdRef.current = id;
     onOpen();
   }
   return (
     <Box>
+      {/* 댓글 입력 폼 */}
+      {/* 로그인 상태인 경우에만 활성화 */}
       {isAuthenticated() && (
         <CommentForm
           boardId={boardId}
@@ -141,6 +145,8 @@ export function CommentContainer({ boardId }) {
           onSubmit={handleSubmit}
         />
       )}
+
+      {/* 댓글 리스트 */}
       <CommentList
         boardId={boardId}
         isSubmitting={isSubmitting}
