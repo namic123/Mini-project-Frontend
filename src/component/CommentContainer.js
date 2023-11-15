@@ -40,7 +40,7 @@ function CommentList({ commentList }) {
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4">
           {commentList.map((comment) => (
-            <Box>
+            <Box key={comment.id}>
               <Flex justifyContent="space-between">
                 <Heading size="xs">{comment.memberId}</Heading>
                 <Text fontSize="xs">{comment.inserted}</Text>
@@ -57,8 +57,10 @@ function CommentList({ commentList }) {
 }
 
 export function CommentContainer({ boardId }) {
+  /* 상태 공유를 위해 상위 컴포넌트에 작성 */
+  /* 제출 여부 상태 */
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  /* 댓글 리스트 상태 */
   const [commentList, setCommentList] = useState([]);
 
   useEffect(() => {
