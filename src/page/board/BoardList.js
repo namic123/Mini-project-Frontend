@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Badge,
   Box,
   Spinner,
   Table,
@@ -11,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ChatIcon } from "@chakra-ui/icons";
 
 /* 게시판 리스트 컴포넌트 */
 export function BoardList() {
@@ -42,6 +44,7 @@ export function BoardList() {
               <Th>제목</Th>
               <Th>작성자</Th>
               <Th>생성날짜</Th>
+              <Th>댓글 개수</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -58,6 +61,13 @@ export function BoardList() {
                 <Td>{board.title}</Td>
                 <Td>{board.nickName}</Td>
                 <Td>{board.inserted}</Td>
+                <Td>
+                  {board.commentNum > 0 && (
+                    <Badge>
+                      <ChatIcon /> {board.commentNum}
+                    </Badge>
+                  )}
+                </Td>
               </Tr>
             ))}
           </Tbody>

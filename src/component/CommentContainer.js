@@ -61,8 +61,6 @@ function CommentItem({
 
   /* 수정 요청 */
   function handleSubmit() {
-    // TODO: 응답 코드에 따른 기능들
-
     /* 상태 업데이트를 위함 */
     setIsSubmitting(true);
 
@@ -99,7 +97,7 @@ function CommentItem({
   return (
     <Box>
       <Flex justifyContent="space-between">
-        <Heading size="xs">{comment.memberId}</Heading>
+        <Heading size="xs">{comment.nickName}</Heading>
         <Text fontSize="xs">{comment.inserted}</Text>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
@@ -189,6 +187,7 @@ function CommentList({
   );
 }
 
+/* 댓글 컴포넌트 컨테이너(최상위) */
 export function CommentContainer({ boardId }) {
   /* 요청 데이터를 서버에 전송하는 과정 진행 여부를 확인하기 위한 상태 */
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -216,11 +215,12 @@ export function CommentContainer({ boardId }) {
       const params = new URLSearchParams();
       params.set("id", boardId);
 
-      axios
-        .get("/api/comment/list?" + params)
-        .then((response) => setCommentList(response.data));
+      axios.get("/api/comment/list?" + params).then((response) => {
+        setCommentList(response.data);
+        console.log(response.data);
+      });
     }
-  }, [isSubmitting]);
+  }, [isSubmitting]); // 제출 상태를 지속적으로 추적하여 상태를 업데이트한다.
 
   /* 댓글 관련 요청 */
   function handleSubmit(comment) {
@@ -275,6 +275,7 @@ export function CommentContainer({ boardId }) {
       });
   }
 
+  /* 댓글 삭제 모달을 키고, 해당 댓글이 포함된 board의 id를 넘겨주는 메서드 */
   function handleDeleteModalOpen(id) {
     // id 를 어딘가 저장
     // setId(id);
