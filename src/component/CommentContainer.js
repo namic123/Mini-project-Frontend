@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, NotAllowedIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LogInProvider";
 
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
@@ -42,8 +42,81 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   );
 }
 
+function CommentItem({ comment, onDeleteModalOpen }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [commentEdited, setCommentEdited] = useState(comment.comment);
+
+  const { hasAccess } = useContext(LoginContext);
+
+  function handleSubmit() {
+    axios
+      .put("/api/comment/edit", { id: comment.id, comment: commentEdited })
+      .then(() => console.log("good"))
+      .catch(() => console.log("bad"))
+      .finally(() => console.log("done"));
+  }
+
+  return (
+    <Box>
+      <Flex justifyContent="space-between">
+        <Heading size="xs">{comment.memberId}</Heading>
+        <Text fontSize="xs">{comment.inserted}</Text>
+      </Flex>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Box flex={1}>
+          <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
+            {comment.comment}
+          </Text>
+          {isEditing && (
+            <Box>
+              <Textarea
+                value={commentEdited}
+                onChange={(e) => setCommentEdited(e.target.value)}
+              />
+              <Button colorScheme={"blue"} onClick={handleSubmit}>
+                저장
+              </Button>
+            </Box>
+          )}
+        </Box>
+
+        {hasAccess(comment.memberId) && (
+          <Box>
+            {isEditing || (
+              <Button
+                size="xs"
+                colorScheme="purple"
+                onClick={() => setIsEditing(true)}
+              >
+                <EditIcon />
+              </Button>
+            )}
+            {isEditing && (
+              <Button
+                size="xs"
+                colorScheme="gray"
+                onClick={() => setIsEditing(false)}
+              >
+                <NotAllowedIcon />
+              </Button>
+            )}
+            <Button
+              onClick={() => onDeleteModalOpen(comment.id)}
+              size="xs"
+              colorScheme="red"
+            >
+              <DeleteIcon />
+            </Button>
+          </Box>
+        )}
+      </Flex>
+    </Box>
+  );
+}
+
 function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
   const { hasAccess } = useContext(LoginContext);
+
   return (
     <Card>
       <CardHeader>
@@ -52,27 +125,11 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
       <CardBody>
         <Stack divider={<StackDivider />} spacing="4">
           {commentList.map((comment) => (
-            <Box key={comment.id}>
-              <Flex justifyContent="space-between">
-                <Heading size="xs">{comment.memberId}</Heading>
-                <Text fontSize="xs">{comment.inserted}</Text>
-              </Flex>
-              <Flex justifyContent="space-between">
-                <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
-                  {comment.comment}
-                </Text>
-                {hasAccess(comment.memberId) && (
-                  <Button
-                    isDisabled={isSubmitting}
-                    size={"xs"}
-                    colorScheme="red"
-                    onClick={() => onDeleteModalOpen(comment.id)}
-                  >
-                    <DeleteIcon />
-                  </Button>
-                )}
-              </Flex>
-            </Box>
+            <CommentItem
+              key={comment.id}
+              comment={comment}
+              onDeleteModalOpen={onDeleteModalOpen}
+            />
           ))}
         </Stack>
       </CardBody>
@@ -81,17 +138,19 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
 }
 
 export function CommentContainer({ boardId }) {
-  /* 상태 공유를 위해 상위 컴포넌트에 작성 */
-  /* 제출 여부 상태 */
   const [isSubmitting, setIsSubmitting] = useState(false);
-  /* 댓글 리스트 상태 */
   const [commentList, setCommentList] = useState([]);
 
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { isAuthenticated } = useContext(LoginContext);
-  const toast = useToast();
+
   // const [id, setId] = useState(0);
+  // useRef : 컴포넌트에서 임시로 값을 저장하는 용도로 사용
   const commentIdRef = useRef(0);
+
+  const { isAuthenticated } = useContext(LoginContext);
+
+  const toast = useToast();
+
   useEffect(() => {
     if (!isSubmitting) {
       const params = new URLSearchParams();
@@ -116,26 +175,23 @@ export function CommentContainer({ boardId }) {
       })
       .catch((error) => {
         toast({
-          description: "댓글 등록 중 오류가 발생하였습니다.",
+          description: "댓글 등록 중 문제가 발생하였습니다.",
           status: "error",
         });
       })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      .finally(() => setIsSubmitting(false));
   }
 
   function handleDelete() {
     setIsSubmitting(true);
-
     axios
-      .delete("/api/comment/remove/" + commentIdRef.current)
-      .then(
+      .delete("/api/comment/" + commentIdRef.current)
+      .then(() => {
         toast({
           description: "댓글이 삭제되었습니다.",
           status: "success",
-        }),
-      )
+        });
+      })
       .catch((error) => {
         if (error.response.status === 401 || error.response.status === 403) {
           toast({
@@ -150,21 +206,20 @@ export function CommentContainer({ boardId }) {
         }
       })
       .finally(() => {
-        setIsSubmitting(false);
         onClose();
+        setIsSubmitting(false);
       });
   }
 
   function handleDeleteModalOpen(id) {
+    // id 를 어딘가 저장
     // setId(id);
-    // useRef : 컴포넌트에서 임시로 값을 저장하는 용도로 사용
     commentIdRef.current = id;
+    // 모달 열기
     onOpen();
   }
   return (
     <Box>
-      {/* 댓글 입력 폼 */}
-      {/* 로그인 상태인 경우에만 활성화 */}
       {isAuthenticated() && (
         <CommentForm
           boardId={boardId}
@@ -172,21 +227,21 @@ export function CommentContainer({ boardId }) {
           onSubmit={handleSubmit}
         />
       )}
-
-      {/* 댓글 리스트 */}
       <CommentList
         boardId={boardId}
         isSubmitting={isSubmitting}
         commentList={commentList}
         onDeleteModalOpen={handleDeleteModalOpen}
       />
-      {/* 삭제 모달 - Chackra UI */}
+
+      {/* 삭제 모달 */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>삭제 확인</ModalHeader>
-          <ModalCloseButton></ModalCloseButton>
+          <ModalCloseButton />
           <ModalBody>삭제 하시겠습니까?</ModalBody>
+
           <ModalFooter>
             <Button onClick={onClose}>닫기</Button>
             <Button
@@ -194,7 +249,7 @@ export function CommentContainer({ boardId }) {
               onClick={handleDelete}
               colorScheme="red"
             >
-              삭제하기
+              삭제
             </Button>
           </ModalFooter>
         </ModalContent>
