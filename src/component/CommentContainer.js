@@ -25,6 +25,7 @@ import axios from "axios";
 import { DeleteIcon, EditIcon, NotAllowedIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LogInProvider";
 
+/* 댓글 입력 폼 */
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
   const [comment, setComment] = useState("");
 
@@ -42,18 +43,57 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   );
 }
 
-function CommentItem({ comment, onDeleteModalOpen }) {
+/* 댓글 리스트의 각 요소 */
+function CommentItem({
+  comment,
+  onDeleteModalOpen,
+  setIsSubmitting,
+  isSubmitting,
+}) {
+  /* 수정 버튼 클릭 시 text area 활성화 상태 */
   const [isEditing, setIsEditing] = useState(false);
+  /* 댓글 상태 관리 */
   const [commentEdited, setCommentEdited] = useState(comment.comment);
-
+  /* 권한 여부 Context */
   const { hasAccess } = useContext(LoginContext);
 
+  const toast = useToast();
+
+  /* 수정 요청 */
   function handleSubmit() {
+    // TODO: 응답 코드에 따른 기능들
+
+    /* 상태 업데이트를 위함 */
+    setIsSubmitting(true);
+
     axios
       .put("/api/comment/edit", { id: comment.id, comment: commentEdited })
-      .then(() => console.log("good"))
-      .catch(() => console.log("bad"))
-      .finally(() => console.log("done"));
+      .then(() => {
+        toast({
+          description: "댓글이 수정되었습니다.",
+          status: "success",
+        });
+      })
+      .catch((error) => {
+        if (error.response.status === 401 || error.response.status === 403) {
+          toast({
+            description: "권한이 없습니다.",
+            status: "warning",
+          });
+        }
+        if (error.response.status === 400) {
+          toast({
+            description: "입력값을 확인해주세요",
+            status: "warning",
+          });
+        }
+      })
+      .finally(() => {
+        /* 컴포넌트 상태 업데이트 */
+        setIsSubmitting(false);
+        /* 댓글 수정 text area 닫기 */
+        setIsEditing(false);
+      });
   }
 
   return (
@@ -67,13 +107,18 @@ function CommentItem({ comment, onDeleteModalOpen }) {
           <Text sx={{ whiteSpace: "pre-wrap" }} pt="2" fontSize="sm">
             {comment.comment}
           </Text>
+          {/*  */}
           {isEditing && (
             <Box>
               <Textarea
                 value={commentEdited}
                 onChange={(e) => setCommentEdited(e.target.value)}
               />
-              <Button colorScheme={"blue"} onClick={handleSubmit}>
+              <Button
+                isDisabled={isSubmitting}
+                colorScheme={"blue"}
+                onClick={handleSubmit}
+              >
                 저장
               </Button>
             </Box>
@@ -114,7 +159,12 @@ function CommentItem({ comment, onDeleteModalOpen }) {
   );
 }
 
-function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
+function CommentList({
+  commentList,
+  onDeleteModalOpen,
+  isSubmitting,
+  setIsSubmitting,
+}) {
   const { hasAccess } = useContext(LoginContext);
 
   return (
@@ -128,6 +178,8 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
             <CommentItem
               key={comment.id}
               comment={comment}
+              setIsSubmitting={setIsSubmitting}
+              isSubmitting={isSubmitting}
               onDeleteModalOpen={onDeleteModalOpen}
             />
           ))}
@@ -138,19 +190,27 @@ function CommentList({ commentList, onDeleteModalOpen, isSubmitting }) {
 }
 
 export function CommentContainer({ boardId }) {
+  /* 요청 데이터를 서버에 전송하는 과정 진행 여부를 확인하기 위한 상태 */
   const [isSubmitting, setIsSubmitting] = useState(false);
+  /* 댓글 리스트 */
   const [commentList, setCommentList] = useState([]);
-
-  const { isOpen, onClose, onOpen } = useDisclosure();
 
   // const [id, setId] = useState(0);
   // useRef : 컴포넌트에서 임시로 값을 저장하는 용도로 사용
+
+  /* useState와 유사 */
+  /* 차이는 useRef는 상태 변경으로 인한 렌더링을 유발하지 않음 */
+  /* 즉, useRef의 값을 담은 .current 속성을 수정해도 렌더링을 트리거하지 않는다. */
   const commentIdRef = useRef(0);
 
+  /* 로그인 상태 여부 체크 */
   const { isAuthenticated } = useContext(LoginContext);
 
+  /* ChakraUi */
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const toast = useToast();
 
+  /* 댓글 목록 요청 */
   useEffect(() => {
     if (!isSubmitting) {
       const params = new URLSearchParams();
@@ -162,9 +222,12 @@ export function CommentContainer({ boardId }) {
     }
   }, [isSubmitting]);
 
+  /* 댓글 관련 요청 */
   function handleSubmit(comment) {
+    /* 제출 중 버튼 비활성화 처리를 위함  */
     setIsSubmitting(true);
 
+    /* 댓글 등록 요청 */
     axios
       .post("/api/comment/add", comment)
       .then(() => {
@@ -182,6 +245,7 @@ export function CommentContainer({ boardId }) {
       .finally(() => setIsSubmitting(false));
   }
 
+  /* 댓글 삭제 요청 */
   function handleDelete() {
     setIsSubmitting(true);
     axios
@@ -230,6 +294,7 @@ export function CommentContainer({ boardId }) {
       <CommentList
         boardId={boardId}
         isSubmitting={isSubmitting}
+        setIsSubmitting={setIsSubmitting}
         commentList={commentList}
         onDeleteModalOpen={handleDeleteModalOpen}
       />
