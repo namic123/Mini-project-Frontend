@@ -185,7 +185,7 @@ export function CommentContainer({ boardId }) {
   function handleDelete() {
     setIsSubmitting(true);
     axios
-      .delete("/api/comment/" + commentIdRef.current)
+      .delete("/api/comment/remove/" + commentIdRef.current)
       .then(() => {
         toast({
           description: "댓글이 삭제되었습니다.",
