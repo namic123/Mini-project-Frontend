@@ -13,3 +13,13 @@
     * npm i @chakra-ui/icons
 * ## prettier
   * nmp i prettier
+* ## font-awesome
+  * npm i --save @fortawesome/fontawesome-svg-core
+  * free
+    * ### Free icons styles
+      * npm i --save @fortawesome/free-solid-svg-icons
+      * npm i --save @fortawesome/free-regular-svg-icons
+      *  npm i --save @fortawesome/free-brands-svg-icons
+    * Add the React Component
+      * npm i --save @fortawesome/react-fontawesome@latest
+

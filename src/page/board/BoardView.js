@@ -4,8 +4,10 @@ import axios from "axios";
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Modal,
   ModalBody,
@@ -21,6 +23,8 @@ import {
 } from "@chakra-ui/react";
 import { LoginContext } from "../../component/LogInProvider";
 import { CommentContainer } from "../../component/CommentContainer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons/faThumbsUp";
 
 /* 게시글 보기 컴포넌트 */
 export function BoardView() {
@@ -78,10 +82,23 @@ export function BoardView() {
       .finally(() => onClose()); // 최종적으로 모달 창 닫기
   }
 
+  function handleLike() {
+    axios
+      .post("/api/like", { boardId: board.id })
+      .then(() => console.log("good"))
+      .catch(() => console.log("bad"))
+      .finally(() => console.log("done"));
+  }
+
   return (
     <>
       <Box>
-        <h1>글 보기</h1>
+        <Flex justifyContent={"space-between"}>
+          <Heading size={"xl"}>{board.id}글 보기</Heading>
+          <Button variant={"ghost"} size={"xl"} onClick={handleLike}>
+            <FontAwesomeIcon icon={faThumbsUp} size={"xl"} />
+          </Button>
+        </Flex>
         <FormControl>
           <FormLabel>제목</FormLabel>
           {/* 수정 불가하도록 읽기 전용 */}
