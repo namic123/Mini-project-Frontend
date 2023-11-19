@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export function BoardList() {
   /* 게시글 리스트의 상태 */
   const [boardList, setBoardList] = useState(null);
+  const [pageInfo, setPageInfo] = useState(null);
 
   /* 페이징 처리, page 쿼리 스트링을 받기 위함 */
   const [params] = useSearchParams();
@@ -29,9 +30,12 @@ export function BoardList() {
 
   /* 게시글 리스트 요청 */
   useEffect(() => {
-    axios
-      .get("/api/board/list?" + params)
-      .then((response) => setBoardList(response.data)); // 리스트 상태 업데이트
+    axios.get("/api/board/list?" + params).then((response) => {
+      // 현재 페이지의 게시글 10개를 저장
+      setBoardList(response.data.boardList);
+      // 페이지 그룹에 대한 정보를 저장, 예: 11~20
+      setPageInfo(response.data.pageInfo);
+    }); // 리스트 상태 업데이트
   }, [params]); /* 페이지 이동 시 상태 변화 감지를 위해 params를 넣어준다. */
 
   /* 게시글 리스트 값이 비어있는 경우 로딩 화면 */
