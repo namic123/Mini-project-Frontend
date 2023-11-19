@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Badge,
   Box,
+  Button,
   Spinner,
   Table,
   Tbody,
@@ -31,7 +32,7 @@ export function BoardList() {
     axios
       .get("/api/board/list?" + params)
       .then((response) => setBoardList(response.data)); // 리스트 상태 업데이트
-  }, []);
+  }, [params]); /* 페이지 이동 시 상태 변화 감지를 위해 params를 넣어준다. */
 
   /* 게시글 리스트 값이 비어있는 경우 로딩 화면 */
   if (boardList === null) {
@@ -85,6 +86,18 @@ export function BoardList() {
             ))}
           </Tbody>
         </Table>
+      </Box>
+      <Box>
+        <Button onClick={() => navigate("/?pg=1")}>1</Button>
+        <Button onClick={() => navigate("/?pg=2")}>2</Button>
+        <Button onClick={() => navigate("/?pg=3")}>3</Button>
+        <Button onClick={() => navigate("/?pg=4")}>4</Button>
+        <Button onClick={() => navigate("/?pg=5")}>5</Button>
+        <Button onClick={() => navigate("/?pg=6")}>6</Button>
+        <Button onClick={() => navigate("/?pg=7")}>7</Button>
+        <Button onClick={() => navigate("/?pg=8")}>8</Button>
+        <Button onClick={() => navigate("/?pg=9")}>9</Button>
+        <Button onClick={() => navigate("/?pg=10")}>10</Button>
       </Box>
     </Box>
   );
