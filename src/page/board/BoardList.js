@@ -13,6 +13,8 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ChatIcon } from "@chakra-ui/icons";
+import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /* 게시판 리스트 컴포넌트 */
 export function BoardList() {
@@ -45,6 +47,7 @@ export function BoardList() {
               <Th>작성자</Th>
               <Th>생성날짜</Th>
               <Th>댓글 개수</Th>
+              <Th>좋아요 개수</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -65,6 +68,14 @@ export function BoardList() {
                   {board.commentNum > 0 && (
                     <Badge>
                       <ChatIcon /> {board.commentNum}
+                    </Badge>
+                  )}
+                </Td>{" "}
+                <Td>
+                  {board.countLike > 0 && (
+                    <Badge>
+                      {board.countLike}
+                      <FontAwesomeIcon icon={fullHeart} size="sm" />
                     </Badge>
                   )}
                 </Td>
