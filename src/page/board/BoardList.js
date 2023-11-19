@@ -12,7 +12,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ChatIcon } from "@chakra-ui/icons";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,6 +27,7 @@ export function BoardList() {
   const [params] = useSearchParams();
   /* Chakra UI */
   const navigate = useNavigate();
+  const location = useLocation();
 
   /* 게시글 리스트 요청 */
   useEffect(() => {
@@ -36,7 +37,9 @@ export function BoardList() {
       // 페이지 그룹에 대한 정보를 저장, 예: 11~20
       setPageInfo(response.data.pageInfo);
     }); // 리스트 상태 업데이트
-  }, [params]); /* 페이지 이동 시 상태 변화 감지를 위해 params를 넣어준다. */
+  }, [
+    location,
+  ]); /* 페이지가 이동할 때, 즉 경로가 이동될 때 dependency를 location으로 설정하는 것이 권장된다. */
 
   /* 게시글 리스트 값이 비어있는 경우 로딩 화면 */
   if (boardList === null) {
