@@ -17,6 +17,29 @@ import { ChatIcon } from "@chakra-ui/icons";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+/* 페이징을 위한 컴포넌트 */
+function Pagination({ pageInfo }) {
+  /* 페이지 그룹에 속한 페이지 번호를 배열에 담는다 */
+  const pageNumbers = [];
+  const navigate = useNavigate();
+  // 예시: startPageNumber = 11, endPageNumber = 20
+  // 11~20 사이 정수값이 배열에 저장
+  for (let i = pageInfo.startPageNumber; i <= pageInfo.endPageNumber; i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <>
+      {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
+      {pageNumbers.map((pageNumber) => (
+        <Button key={pageNumber} onClick={() => navigate("/?pg=" + pageNumber)}>
+          {pageNumber}
+        </Button>
+      ))}
+    </>
+  );
+}
+
 /* 게시판 리스트 컴포넌트 */
 export function BoardList() {
   /* 게시글 리스트의 상태 */
@@ -94,18 +117,8 @@ export function BoardList() {
           </Tbody>
         </Table>
       </Box>
-      <Box>
-        <Button onClick={() => navigate("/?pg=1")}>1</Button>
-        <Button onClick={() => navigate("/?pg=2")}>2</Button>
-        <Button onClick={() => navigate("/?pg=3")}>3</Button>
-        <Button onClick={() => navigate("/?pg=4")}>4</Button>
-        <Button onClick={() => navigate("/?pg=5")}>5</Button>
-        <Button onClick={() => navigate("/?pg=6")}>6</Button>
-        <Button onClick={() => navigate("/?pg=7")}>7</Button>
-        <Button onClick={() => navigate("/?pg=8")}>8</Button>
-        <Button onClick={() => navigate("/?pg=9")}>9</Button>
-        <Button onClick={() => navigate("/?pg=10")}>10</Button>
-      </Box>
+      {/* 페이징을 위한 컴포넌트 */}
+      <Pagination pageInfo={pageInfo} />
     </Box>
   );
 }
