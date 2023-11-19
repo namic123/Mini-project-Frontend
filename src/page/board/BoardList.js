@@ -34,7 +34,10 @@ function Pagination({ pageInfo }) {
       <Box>
         {/* 이전 페이지 그룹이 있을 때만 출력 */}
         {pageInfo.prevPageNumber && (
-          <Button onClick={() => navigate("/?pg=" + pageInfo.prevPageNumber)}>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/?pg=" + pageInfo.prevPageNumber)}
+          >
             <FontAwesomeIcon icon={faAngleLeft} />
           </Button>
         )}
@@ -43,6 +46,10 @@ function Pagination({ pageInfo }) {
         {pageNumbers.map((pageNumber) => (
           <Button
             key={pageNumber}
+            // 현재페이지와 pageNumber요소가 일치할 경우 색 변경
+            variant={
+              pageNumber === pageInfo.currentPageNumber ? "solid" : "ghost"
+            }
             onClick={() => navigate("/?pg=" + pageNumber)}
           >
             {pageNumber}
@@ -50,7 +57,10 @@ function Pagination({ pageInfo }) {
         ))}
         {/* 이후 페이지 그룹이 있을 때만 출력 */}
         {pageInfo.nextPageNumber && (
-          <Button onClick={() => navigate("/?pg=" + pageInfo.nextPageNumber)}>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/?pg=" + pageInfo.nextPageNumber)}
+          >
             <FontAwesomeIcon icon={faAngleRight} />
           </Button>
         )}
