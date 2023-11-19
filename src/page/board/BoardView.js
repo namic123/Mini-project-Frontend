@@ -25,11 +25,28 @@ import { LoginContext } from "../../component/LogInProvider";
 import { CommentContainer } from "../../component/CommentContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons/faThumbsUp";
+import * as PropTypes from "prop-types";
+import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
+
+function LikeContainer({ like, onClick }) {
+  if (like === null) {
+    return <Spinner />;
+  }
+  return (
+    <>
+      <Button variant={"ghost"} size={"xl"} onClick={onClick}>
+        <FontAwesomeIcon icon={faHeart} size="xl" />
+      </Button>
+    </>
+  );
+}
 
 /* 게시글 보기 컴포넌트 */
 export function BoardView() {
   /* 게시글 상태 */
   const [board, setBoard] = useState(null);
+  /* 좋아요 상태 */
+  const [like, setLike] = useState(null);
 
   /* 모달 창 사용을 위한 함수 */
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,13 +63,19 @@ export function BoardView() {
   let toast = useToast();
   let navigate = useNavigate();
 
-  /* board 엔티티의 값 요청 */
-  /* 글의 저장된 값을 불러오기 위함 */
+  /* 해당 board의 내용을 불러오는 요청  */
   useEffect(() => {
     axios
       .get("/api/board/id/" + id)
       /* 요청 성공 */
       .then((response) => setBoard(response.data));
+  }, []);
+
+  /* 해당 board가 가진 좋아요 개수 요청 */
+  useEffect(() => {
+    axios
+      .get("/api/like/board/" + id)
+      .then((response) => setLike(response.data));
   }, []);
 
   /* 게시물을 가지고 오지 못한 경우, 로딩 */
@@ -83,9 +106,10 @@ export function BoardView() {
   }
 
   function handleLike() {
+    /* 좋아요 등록 요청 */
     axios
       .post("/api/like", { boardId: board.id })
-      .then(() => console.log("good"))
+      .then((response) => setLike(response.data))
       .catch(() => console.log("bad"))
       .finally(() => console.log("done"));
   }
@@ -95,9 +119,7 @@ export function BoardView() {
       <Box>
         <Flex justifyContent={"space-between"}>
           <Heading size={"xl"}>{board.id}글 보기</Heading>
-          <Button variant={"ghost"} size={"xl"} onClick={handleLike}>
-            <FontAwesomeIcon icon={faThumbsUp} size={"xl"} />
-          </Button>
+          <LikeContainer like={like} onClick={handleLike} />
         </Flex>
         <FormControl>
           <FormLabel>제목</FormLabel>
