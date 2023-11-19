@@ -21,6 +21,7 @@ import {
   Text,
   useDisclosure,
   useToast,
+  Tooltip,
 } from "@chakra-ui/react";
 import { LoginContext } from "../../component/LogInProvider";
 import { CommentContainer } from "../../component/CommentContainer";
@@ -31,6 +32,9 @@ import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons/faHea
 
 /* 좋아요 컨테이너 */
 function LikeContainer({ like, onClick }) {
+  /* 사용자 로그인 여부를 확인하기 위함 */
+  const { isAuthenticated } = useContext(LoginContext);
+
   /* 좋아요 정보를 불러올 때까지 로딩 */
   if (like === null) {
     return <Spinner />;
@@ -38,12 +42,19 @@ function LikeContainer({ like, onClick }) {
   return (
     <>
       <Flex gap={2}>
-        <Button variant={"ghost"} size={"xl"} onClick={onClick}>
-          {/* 좋아요를 누른 경우 */}
-          {like.like && <FontAwesomeIcon icon={fullHeart} size="xl" />}
-          {/* 좋아요를 누르지 않았거나, 비로그인인 경우 */}
-          {like.like || <FontAwesomeIcon icon={emptyHeart} size="xl" />}
-        </Button>
+        {/* 로그인 여부에 따라서, 좋아요 버튼 접근 시 메세지 출력 */}
+        <Tooltip
+          isDisabled={isAuthenticated()}
+          hasArrow
+          label={"로그인 하세요."}
+        >
+          <Button variant={"ghost"} size={"xl"} onClick={onClick}>
+            {/* 좋아요를 누른 경우 */}
+            {like.like && <FontAwesomeIcon icon={fullHeart} size="xl" />}
+            {/* 좋아요를 누르지 않았거나, 비로그인인 경우 */}
+            {like.like || <FontAwesomeIcon icon={emptyHeart} size="xl" />}
+          </Button>
+        </Tooltip>
         {/* 게시글의 총 좋아요 수 */}
         <Heading size={"lg"}>{like.countLike}</Heading>
       </Flex>
