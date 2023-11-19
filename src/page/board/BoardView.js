@@ -25,9 +25,9 @@ import {
 import { LoginContext } from "../../component/LogInProvider";
 import { CommentContainer } from "../../component/CommentContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons/faThumbsUp";
 import * as PropTypes from "prop-types";
-import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
+import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
+import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
 
 /* 좋아요 컨테이너 */
 function LikeContainer({ like, onClick }) {
@@ -37,14 +37,16 @@ function LikeContainer({ like, onClick }) {
   }
   return (
     <>
-      <Button variant={"ghost"} size={"xl"} onClick={onClick}>
-        <FontAwesomeIcon icon={faHeart} size="xl" />
-        {/* 좋아요를 누른 경우 */}
-        {like.like && <Text>꽉찬 하트</Text>}
-        {/* 좋아요를 누르지 않았거나, 비로그인인 경우 */}
-        {like.like || <Text>빈 하트</Text>}
-        <Text>{like.countLike}</Text>
-      </Button>
+      <Flex gap={2}>
+        <Button variant={"ghost"} size={"xl"} onClick={onClick}>
+          {/* 좋아요를 누른 경우 */}
+          {like.like && <FontAwesomeIcon icon={fullHeart} size="xl" />}
+          {/* 좋아요를 누르지 않았거나, 비로그인인 경우 */}
+          {like.like || <FontAwesomeIcon icon={emptyHeart} size="xl" />}
+        </Button>
+        {/* 게시글의 총 좋아요 수 */}
+        <Heading size={"lg"}>{like.countLike}</Heading>
+      </Flex>
     </>
   );
 }
