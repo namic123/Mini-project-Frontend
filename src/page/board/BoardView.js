@@ -28,7 +28,9 @@ import { faThumbsUp } from "@fortawesome/free-solid-svg-icons/faThumbsUp";
 import * as PropTypes from "prop-types";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 
+/* 좋아요 컨테이너 */
 function LikeContainer({ like, onClick }) {
+  /* 좋아요 정보를 불러올 때까지 로딩 */
   if (like === null) {
     return <Spinner />;
   }
@@ -63,6 +65,8 @@ export function BoardView() {
   let toast = useToast();
   let navigate = useNavigate();
 
+  /* 게시물 관련 기능 */
+
   /* 해당 board의 내용을 불러오는 요청  */
   useEffect(() => {
     axios
@@ -70,8 +74,7 @@ export function BoardView() {
       /* 요청 성공 */
       .then((response) => setBoard(response.data));
   }, []);
-
-  /* 해당 board가 가진 좋아요 개수 요청 */
+  /* 해당 board가 가진 좋아요 총 개수 요청 */
   useEffect(() => {
     axios
       .get("/api/like/board/" + id)
@@ -83,7 +86,7 @@ export function BoardView() {
     return <Spinner />;
   }
 
-  /* 삭제 요청 메서드 */
+  /* 게시글 삭제 요청 메서드 */
   function handleDelete() {
     axios
       .delete("/api/board/remove/" + id)
@@ -105,8 +108,8 @@ export function BoardView() {
       .finally(() => onClose()); // 최종적으로 모달 창 닫기
   }
 
+  /* 좋아요 등록 요청 */
   function handleLike() {
-    /* 좋아요 등록 요청 */
     axios
       .post("/api/like", { boardId: board.id })
       .then((response) => setLike(response.data))
