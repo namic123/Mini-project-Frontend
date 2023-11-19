@@ -16,6 +16,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ChatIcon } from "@chakra-ui/icons";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 /* 페이징을 위한 컴포넌트 */
 function Pagination({ pageInfo }) {
@@ -30,12 +31,30 @@ function Pagination({ pageInfo }) {
 
   return (
     <>
-      {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
-      {pageNumbers.map((pageNumber) => (
-        <Button key={pageNumber} onClick={() => navigate("/?pg=" + pageNumber)}>
-          {pageNumber}
-        </Button>
-      ))}
+      <Box>
+        {/* 이전 페이지 그룹이 있을 때만 출력 */}
+        {pageInfo.prevPageNumber && (
+          <Button onClick={() => navigate("/?pg=" + pageInfo.prevPageNumber)}>
+            <FontAwesomeIcon icon={faAngleLeft} />
+          </Button>
+        )}
+
+        {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
+        {pageNumbers.map((pageNumber) => (
+          <Button
+            key={pageNumber}
+            onClick={() => navigate("/?pg=" + pageNumber)}
+          >
+            {pageNumber}
+          </Button>
+        ))}
+        {/* 이후 페이지 그룹이 있을 때만 출력 */}
+        {pageInfo.nextPageNumber && (
+          <Button onClick={() => navigate("/?pg=" + pageInfo.nextPageNumber)}>
+            <FontAwesomeIcon icon={faAngleRight} />
+          </Button>
+        )}
+      </Box>
     </>
   );
 }
