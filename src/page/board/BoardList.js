@@ -63,19 +63,19 @@ export function BoardList() {
                 <Td>{board.id}</Td>
                 <Td>{board.title}</Td>
                 <Td>{board.nickName}</Td>
-                <Td>{board.inserted}</Td>
+                <Td>{board.ago}</Td>
                 <Td>
                   {board.commentNum > 0 && (
                     <Badge>
                       <ChatIcon /> {board.commentNum}
                     </Badge>
                   )}
-                </Td>{" "}
+                </Td>
                 <Td>
                   {board.countLike > 0 && (
                     <Badge>
                       {board.countLike}
-                      <FontAwesomeIcon icon={fullHeart} size="sm" />
+                      <FontAwesomeIcon icon={fullHeart} size="sm" />{" "}
                     </Badge>
                   )}
                 </Td>
