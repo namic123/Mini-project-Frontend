@@ -4,7 +4,6 @@ import axios from "axios";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "./LogInProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faHouse, faPen } from "@fortawesome/free-solid-svg-icons";
 import { faUserPlus } from "@fortawesome/free-solid-svg-icons/faUserPlus";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons/faRightToBracket";

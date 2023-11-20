@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
+  Image,
   Box,
   Button,
   Flex,
@@ -26,7 +27,6 @@ import {
 import { LoginContext } from "../../component/LogInProvider";
 import { CommentContainer } from "../../component/CommentContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as PropTypes from "prop-types";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons/faHeart";
 
@@ -153,6 +153,12 @@ export function BoardView() {
           <FormLabel>본문</FormLabel>
           <Textarea value={board.content} readOnly></Textarea>
         </FormControl>
+        {/* 이미지 출력 */}
+        {board.fileNames.map((name) => (
+          <Box my={"5px"} border={"3px solid black"}>
+            <Image width="100%" src={name} />
+          </Box>
+        ))}
         <FormControl>
           <FormLabel>작성자</FormLabel>
           <Input value={board.nickName} readOnly />
