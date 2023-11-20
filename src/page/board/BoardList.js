@@ -45,6 +45,7 @@ function Pagination({ pageInfo }) {
   const navigate = useNavigate();
   // 예시: startPageNumber = 11, endPageNumber = 20
   // 11~20 사이 정수값이 배열에 저장
+
   for (let i = pageInfo.startPageNumber; i <= pageInfo.endPageNumber; i++) {
     pageNumbers.push(i);
   }
@@ -54,12 +55,9 @@ function Pagination({ pageInfo }) {
       <Box>
         {/* 이전 페이지 그룹이 있을 때만 출력 */}
         {pageInfo.prevPageNumber && (
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/?pg=" + pageInfo.prevPageNumber)}
-          >
+          <PageButton variant="ghost" pageNumber={pageInfo.prevPageNumber}>
             <FontAwesomeIcon icon={faAngleLeft} />
-          </Button>
+          </PageButton>
         )}
 
         {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
@@ -77,12 +75,9 @@ function Pagination({ pageInfo }) {
         ))}
         {/* 이후 페이지 그룹이 있을 때만 출력 */}
         {pageInfo.nextPageNumber && (
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/?pg=" + pageInfo.nextPageNumber)}
-          >
+          <PageButton variant="ghost" pageNumber={pageInfo.nextPageNumber}>
             <FontAwesomeIcon icon={faAngleRight} />
-          </Button>
+          </PageButton>
         )}
       </Box>
     </>
