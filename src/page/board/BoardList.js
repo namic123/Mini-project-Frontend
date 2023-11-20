@@ -20,7 +20,25 @@ import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
+function PageButton({ variant, pageNumber, children }) {
+  const [params] = useSearchParams();
+  const navigate = useNavigate();
+  function handleClick() {
+    params.set("pg", pageNumber);
+    navigate("/?" + params);
+  }
+
+  return (
+    <>
+      <Button variant={variant} onClick={handleClick}>
+        {children}
+      </Button>
+    </>
+  );
+}
+
 /* 페이징을 위한 컴포넌트 */
+
 function Pagination({ pageInfo }) {
   /* 페이지 그룹에 속한 페이지 번호를 배열에 담는다 */
   const pageNumbers = [];
@@ -46,16 +64,16 @@ function Pagination({ pageInfo }) {
 
         {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
         {pageNumbers.map((pageNumber) => (
-          <Button
+          <PageButton
             key={pageNumber}
             // 현재페이지와 pageNumber요소가 일치할 경우 색 변경
             variant={
               pageNumber === pageInfo.currentPageNumber ? "solid" : "ghost"
             }
-            onClick={() => navigate("/?pg=" + pageNumber)}
+            pageNumber={pageNumber}
           >
             {pageNumber}
-          </Button>
+          </PageButton>
         ))}
         {/* 이후 페이지 그룹이 있을 때만 출력 */}
         {pageInfo.nextPageNumber && (
@@ -70,8 +88,8 @@ function Pagination({ pageInfo }) {
     </>
   );
 }
-
 /* 검색 엔진 컴포넌트 */
+
 function SearchComponent() {
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
@@ -91,7 +109,6 @@ function SearchComponent() {
     </Flex>
   );
 }
-
 /* 게시판 리스트 컴포넌트 */
 export function BoardList() {
   /* 게시글 리스트의 상태 */
