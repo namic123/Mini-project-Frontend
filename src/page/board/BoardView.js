@@ -154,9 +154,9 @@ export function BoardView() {
           <Textarea value={board.content} readOnly></Textarea>
         </FormControl>
         {/* 이미지 출력 */}
-        {board.fileNames.map((name) => (
+        {board.files.map((file) => (
           <Box my={"5px"} border={"3px solid black"}>
-            <Image width="100%" src={name} />
+            <Image width="100%" src={file.url} alt={file.name} />
           </Box>
         ))}
         <FormControl>
