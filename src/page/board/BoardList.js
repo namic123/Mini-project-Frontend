@@ -42,7 +42,6 @@ function PageButton({ variant, pageNumber, children }) {
 function Pagination({ pageInfo }) {
   /* 페이지 그룹에 속한 페이지 번호를 배열에 담는다 */
   const pageNumbers = [];
-  const navigate = useNavigate();
   // 예시: startPageNumber = 11, endPageNumber = 20
   // 11~20 사이 정수값이 배열에 저장
 

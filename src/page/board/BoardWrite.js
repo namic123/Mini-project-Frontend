@@ -15,6 +15,7 @@ export function BoardWrite() {
   /* 게시물 작성 컴포넌트*/
   const [title, setTitle] = useState(""); // 제목 상태
   const [content, setContent] = useState(""); // 본문 상태
+  const [files, setFiles] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false); // 버튼 로딩 상태
 
   /* Chakra UI */
@@ -28,9 +29,14 @@ export function BoardWrite() {
 
     /* 저장 요청 */
     axios
-      .post("/api/board/add", {
+      /* axios.post를 사용하여 FormData 객체를 전송하는 방식 */
+      /* 주로 파일 업로드나 enctype="multipart/form-data"를 요구하는 서버에 데이터를 전송할 때 사용 */
+      /* FormData 객체를 사용하여 폼 데이터를 구성하고, 이를 axios.post를 통해 전송 */
+      /* Content-Type 헤더는 자동으로 multipart/form-data로 설정 */
+      .postForm("/api/board/add", {
         title,
         content,
+        files,
       })
       .then(() => {
         toast({ description: "새 글이 저장되었습니다.", status: "success" });
@@ -77,6 +83,15 @@ export function BoardWrite() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             ></Textarea>
+          </FormControl>
+          <FormControl>
+            <FormLabel>이미지</FormLabel>
+            <Input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={(e) => setFiles(e.target.files)}
+            />
           </FormControl>
           <Button
             isDisabled={isSubmitting}
