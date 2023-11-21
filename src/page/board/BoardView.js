@@ -153,7 +153,7 @@ export function BoardView() {
           <FormLabel>본문</FormLabel>
           <Textarea value={board.content} readOnly></Textarea>
         </FormControl>
-        {/* 이미지 출력 */}
+        {/* 파일 이미지 출력 */}
         {board.files.map((file) => (
           <Box my={"5px"} border={"3px solid black"}>
             <Image width="100%" src={file.url} alt={file.name} />
