@@ -20,7 +20,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-
+/* 회원 수정 컴포넌트 */
 export function MemberEdit() {
   /* 회원 상태 */
   const [member, setMember] = useState(null);
