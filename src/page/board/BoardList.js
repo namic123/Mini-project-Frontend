@@ -18,7 +18,11 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ChatIcon } from "@chakra-ui/icons";
 import { faHeart as fullHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faImages,
+} from "@fortawesome/free-solid-svg-icons";
 
 function PageButton({ variant, pageNumber, children }) {
   const [params] = useSearchParams();
@@ -144,6 +148,7 @@ export function BoardList() {
               <Th>생성날짜</Th>
               <Th>댓글 개수</Th>
               <Th>좋아요 개수</Th>
+              <Th>업로드한 파일 개수</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -172,6 +177,14 @@ export function BoardList() {
                     <Badge>
                       {board.countLike}
                       <FontAwesomeIcon icon={fullHeart} size="sm" />{" "}
+                    </Badge>
+                  )}
+                </Td>
+                <Td>
+                  {board.countFile > 0 && (
+                    <Badge>
+                      <FontAwesomeIcon icon={faImages} />
+                      {board.countFile}
                     </Badge>
                   )}
                 </Td>

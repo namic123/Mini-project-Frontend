@@ -16,7 +16,7 @@ export function BoardWrite() {
   /* 게시물 작성 컴포넌트*/
   const [title, setTitle] = useState(""); // 제목 상태
   const [content, setContent] = useState(""); // 본문 상태
-  const [files, setFiles] = useState(null);
+  const [uploadFiles, setUploadFiles] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false); // 버튼 로딩 상태
 
   /* Chakra UI */
@@ -37,7 +37,7 @@ export function BoardWrite() {
       .postForm("/api/board/add", {
         title,
         content,
-        files,
+        uploadFiles,
       })
       .then(() => {
         toast({ description: "새 글이 저장되었습니다.", status: "success" });
@@ -91,7 +91,7 @@ export function BoardWrite() {
               type="file"
               accept="image/*"
               multiple
-              onChange={(e) => setFiles(e.target.files)}
+              onChange={(e) => setUploadFiles(e.target.uploadFiles)}
             />
             <FormHelperText>
               한 개 파일은 1MB 이내, 총 용량은 10MB 이내로 첨부하세요.
