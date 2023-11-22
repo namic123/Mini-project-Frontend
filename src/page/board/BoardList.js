@@ -166,8 +166,8 @@ export function BoardList() {
   }
   return (
     <Box>
-      <Heading margin={"20px"}>게시판 목록</Heading>
-      <Box marginTop={"30px"}>
+      <Heading marginBottom={"50px"}>게시판 목록</Heading>
+      <Box>
         <Table>
           <Thead>
             <Tr>
