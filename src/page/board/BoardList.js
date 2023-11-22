@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Input,
   Select,
   Spinner,
@@ -147,18 +148,18 @@ export function BoardList() {
   }
   return (
     <Box>
-      <h1>게시물 목록</h1>
+      <Heading margin={"20px"}>게시판 목록</Heading>
       <Box>
         <Table>
           <Thead>
             <Tr>
-              <Th>아이디</Th>
+              <Th w={"100px"}>아이디</Th>
               <Th>제목</Th>
-              <Th>작성자</Th>
-              <Th>생성날짜</Th>
-              <Th>댓글 개수</Th>
-              <Th>좋아요 개수</Th>
-              <Th>업로드한 파일 개수</Th>
+              <Th w={"150px"}>작성자</Th>
+              <Th w={"150px"}>생성날짜</Th>
+              <Th w={"100px"}>댓글</Th>
+              <Th w={"100px"}>좋아요</Th>
+              <Th w={"100px"}>업로드</Th>
             </Tr>
           </Thead>
           <Tbody>
