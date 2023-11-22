@@ -3,8 +3,15 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Center,
+  Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   Modal,
   ModalBody,
@@ -90,37 +97,45 @@ export function MemberView() {
 
   return (
     <>
-      <Box>
-        <h1>{member.id}님 정보</h1>
-        {/* 닉네임 폼 */}
-        <FormControl>
-          <FormLabel>nick name</FormLabel>
-          <Input value={member.nickName} readOnly />
-        </FormControl>
-        {/* 비밀번호 폼 */}
-        <FormControl>
-          <FormLabel>password</FormLabel>
-          <Input type={"text"} value={member.password} readOnly />
-        </FormControl>
-        {/* 이메일 폼 */}
-        <FormControl>
-          <FormLabel>email</FormLabel>
-          <Input value={member.email} readOnly />
-        </FormControl>
-
-        {/* 회원 수정 경로로 이동 */}
-        <Button
-          colorScheme="blue"
-          onClick={() => {
-            navigate("/member/edit?" + params.toString());
-          }}
-        >
-          수정
-        </Button>
-        <Button colorScheme="red" onClick={onOpen}>
-          탈퇴
-        </Button>
-
+      <Center marginTop={"130px"}>
+        <Card width={"lg"}>
+          <CardHeader>
+            <Heading>{member.id}님 정보</Heading>
+          </CardHeader>
+          <CardBody>
+            {/* 닉네임 폼 */}
+            <FormControl>
+              <FormLabel>닉네임</FormLabel>
+              <Input value={member.nickName} readOnly />
+            </FormControl>
+            {/* 비밀번호 폼 */}
+            <FormControl>
+              <FormLabel>비밀번호</FormLabel>
+              <Input type={"text"} value={member.password} readOnly />
+            </FormControl>
+            {/* 이메일 폼 */}
+            <FormControl>
+              <FormLabel>이메일</FormLabel>
+              <Input value={member.email} readOnly />
+            </FormControl>
+          </CardBody>
+          <CardFooter>
+            {/* 회원 수정 경로로 이동 */}
+            <Flex gap={2}>
+              <Button
+                colorScheme="blue"
+                onClick={() => {
+                  navigate("/member/edit?" + params.toString());
+                }}
+              >
+                수정
+              </Button>
+              <Button colorScheme="red" onClick={onOpen}>
+                탈퇴
+              </Button>
+            </Flex>
+          </CardFooter>
+        </Card>
         {/* 탈퇴 모달 - Chackra UI */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -138,7 +153,7 @@ export function MemberView() {
             </ModalFooter>
           </ModalContent>
         </Modal>
-      </Box>
+      </Center>
     </>
   );
 }
