@@ -4,10 +4,16 @@ import axios from "axios";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Center,
   Flex,
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   Modal,
   ModalBody,
@@ -176,76 +182,86 @@ export function MemberEdit() {
   }
 
   return (
-    <Box>
-      <h1>{id}님 정보 수정</h1>
-      <FormControl>
-        <FormLabel>nick name</FormLabel>
-        <Flex>
-          <Input
-            type="text"
-            value={nickName}
-            /* nickName이 변경된 경우 nickName 값을 새로 설정하고, 중복 확인 로직 활성화 */
-            onChange={(e) => {
-              setNickName(e.target.value);
-              setNickNameAvailable(false);
-            }}
-          />
-          <Button isDisabled={nickNameChecked} onClick={handleNickNameCheck}>
-            중복확인
-          </Button>
-        </Flex>
-      </FormControl>
-      <FormControl>
-        <FormLabel>password</FormLabel>
-        <Input
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <FormHelperText>
-          비밀번호를 작성하지 않으면, 기존 비밀번호로 설정
-        </FormHelperText>
-      </FormControl>
+    <Center marginTop={"130px"}>
+      <Card w={"xl"}>
+        <CardHeader>
+          <Heading>{id}님 정보 수정</Heading>
+        </CardHeader>
+        <CardBody>
+          <FormControl mb={2}>
+            <FormLabel>nick name</FormLabel>
+            <Flex>
+              <Input
+                type="text"
+                value={nickName}
+                /* nickName이 변경된 경우 nickName 값을 새로 설정하고, 중복 확인 로직 활성화 */
+                onChange={(e) => {
+                  setNickName(e.target.value);
+                  setNickNameAvailable(false);
+                }}
+              />
+              <Button
+                isDisabled={nickNameChecked}
+                onClick={handleNickNameCheck}
+              >
+                중복확인
+              </Button>
+            </Flex>
+          </FormControl>
+          <FormControl mb={2}>
+            <FormLabel>password</FormLabel>
+            <Input
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormHelperText>
+              비밀번호를 작성하지 않으면, 기존 비밀번호로 설정
+            </FormHelperText>
+          </FormControl>
 
-      {/* password의 입력값이 있을 경우에만 생성 */}
-      {password.length > 0 && (
-        <FormControl>
-          <FormLabel>password 확인</FormLabel>
-          <Input
-            type="text"
-            value={passwordCheck}
-            onChange={(e) => setPasswordCheck(e.target.value)}
-          />
-        </FormControl>
-      )}
-      {/*  email을 변경하면(작성시작) 중복확인 다시 하도록  */}
-      {/*  기존 email과 같으면 중복확인 안해도됨 */}
-      <FormControl>
-        <FormLabel>email</FormLabel>
-        <Flex>
-          <Input
-            type="email"
-            value={email}
-            /* email이 변경된 경우 email 값을 새로 설정하고, 중복 확인 로직 활성화 */
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setEmailAvailable(false);
-            }}
-          />
-          <Button isDisabled={emailChecked} onClick={handleEmailCheck}>
-            중복확인
+          {/* password의 입력값이 있을 경우에만 생성 */}
+          {password.length > 0 && (
+            <FormControl mb={2}>
+              <FormLabel>password 확인</FormLabel>
+              <Input
+                type="text"
+                value={passwordCheck}
+                onChange={(e) => setPasswordCheck(e.target.value)}
+              />
+            </FormControl>
+          )}
+          {/*  email을 변경하면(작성시작) 중복확인 다시 하도록  */}
+          {/*  기존 email과 같으면 중복확인 안해도됨 */}
+          <FormControl mb={2}>
+            <FormLabel>email</FormLabel>
+            <Flex>
+              <Input
+                type="email"
+                value={email}
+                /* email이 변경된 경우 email 값을 새로 설정하고, 중복 확인 로직 활성화 */
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailAvailable(false);
+                }}
+              />
+              <Button isDisabled={emailChecked} onClick={handleEmailCheck}>
+                중복확인
+              </Button>
+            </Flex>
+          </FormControl>
+        </CardBody>
+        <CardFooter>
+          {/* 이메일 중복, 닉네임 중복 확인 및, password 확인 검증 완료 후 활성화 */}
+          <Button
+            isDisabled={!emailChecked || !nickNameChecked || !passwordChecked}
+            colorScheme="blue"
+            onClick={onOpen}
+          >
+            수정
           </Button>
-        </Flex>
-      </FormControl>
-      {/* 이메일 중복, 닉네임 중복 확인 및, password 확인 검증 완료 후 활성화 */}
-      <Button
-        isDisabled={!emailChecked || !nickNameChecked || !passwordChecked}
-        colorScheme="blue"
-        onClick={onOpen}
-      >
-        수정
-      </Button>
-
+        </CardFooter>
+      </Card>
       {/* 수정 모달 - Chackra UI */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -262,6 +278,6 @@ export function MemberEdit() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Box>
+    </Center>
   );
 }
