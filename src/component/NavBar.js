@@ -45,44 +45,63 @@ export function NavBar() {
       {/* 로그인 상태에 따른 버튼 출력 */}
       {/* 로그인 상태 isAuthenticated() && */}
       {/* 비로그인 상태 isAuthenticated() || */}
-      <Button onClick={() => navigate("/")}>
-        <FontAwesomeIcon icon={faHouse} />
-      </Button>
+      <Button
+        leftIcon={<FontAwesomeIcon icon={faHouse} />}
+        onClick={() => navigate("/")}
+      ></Button>
 
       {/* 글 쓰기 */}
       {isAuthenticated() && (
-        <Button onClick={() => navigate("/write")}>
-          <FontAwesomeIcon icon={faPen} />
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faPen} />}
+          onClick={() => navigate("/write")}
+        >
+          작성
         </Button>
       )}
       {/* 회원 가입 */}
       {isAuthenticated() || (
-        <Button onClick={() => navigate("/signup")}>
-          <FontAwesomeIcon icon={faUserPlus} />
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faUserPlus} />}
+          onClick={() => navigate("/signup")}
+        >
+          회원가입
         </Button>
       )}
       {/* 관리자 권한이 있을 경우 */}
       {isAdmin() && (
-        <Button onClick={() => navigate("/member/list")}>
-          <FontAwesomeIcon icon={faUsers} />
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faUsers} />}
+          onClick={() => navigate("/member/list")}
+        >
+          회원목록
         </Button>
       )}
       {/* 로그인 계정의 회원 정보 경로 */}
       {isAuthenticated() && (
-        <Button onClick={() => navigate("/member?" + urlParams.toString())}>
-          <FontAwesomeIcon icon={faCircleUser} />
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faCircleUser} />}
+          onClick={() => navigate("/member?" + urlParams.toString())}
+        >
+          {login.nickName}
         </Button>
       )}
       {/* 로그인 */}
       {isAuthenticated() || (
-        <Button onClick={() => navigate("/login")}>
-          <FontAwesomeIcon icon={faUser} />
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faUser} />}
+          onClick={() => navigate("/login")}
+        >
+          로그인
         </Button>
       )}
       {/* 로그아웃 */}
       {isAuthenticated() && (
-        <Button onClick={handleLogout}>
-          <FontAwesomeIcon icon={faRightToBracket} />
+        <Button
+          leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
+          onClick={handleLogout}
+        >
+          로그아웃
         </Button>
       )}
     </Flex>
