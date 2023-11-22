@@ -46,13 +46,21 @@ export function NavBar() {
       {/* 로그인 상태 isAuthenticated() && */}
       {/* 비로그인 상태 isAuthenticated() || */}
       <Button
+        borderRadius={0}
+        variant={"ghost"}
+        size={"lg"}
         leftIcon={<FontAwesomeIcon icon={faHouse} />}
         onClick={() => navigate("/")}
-      ></Button>
+      >
+        홈
+      </Button>
 
       {/* 글 쓰기 */}
       {isAuthenticated() && (
         <Button
+          borderRadius={0}
+          variant={"ghost"}
+          size={"lg"}
           leftIcon={<FontAwesomeIcon icon={faPen} />}
           onClick={() => navigate("/write")}
         >
@@ -62,6 +70,9 @@ export function NavBar() {
       {/* 회원 가입 */}
       {isAuthenticated() || (
         <Button
+          borderRadius={0}
+          variant={"ghost"}
+          size={"lg"}
           leftIcon={<FontAwesomeIcon icon={faUserPlus} />}
           onClick={() => navigate("/signup")}
         >
@@ -71,6 +82,9 @@ export function NavBar() {
       {/* 관리자 권한이 있을 경우 */}
       {isAdmin() && (
         <Button
+          borderRadius={0}
+          variant={"ghost"}
+          size={"lg"}
           leftIcon={<FontAwesomeIcon icon={faUsers} />}
           onClick={() => navigate("/member/list")}
         >
@@ -80,6 +94,9 @@ export function NavBar() {
       {/* 로그인 계정의 회원 정보 경로 */}
       {isAuthenticated() && (
         <Button
+          borderRadius={0}
+          variant={"ghost"}
+          size={"lg"}
           leftIcon={<FontAwesomeIcon icon={faCircleUser} />}
           onClick={() => navigate("/member?" + urlParams.toString())}
         >
@@ -89,6 +106,9 @@ export function NavBar() {
       {/* 로그인 */}
       {isAuthenticated() || (
         <Button
+          borderRadius={0}
+          variant={"ghost"}
+          size={"lg"}
           leftIcon={<FontAwesomeIcon icon={faUser} />}
           onClick={() => navigate("/login")}
         >
@@ -98,6 +118,9 @@ export function NavBar() {
       {/* 로그아웃 */}
       {isAuthenticated() && (
         <Button
+          borderRadius={0}
+          variant={"ghost"}
+          size={"lg"}
           leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
           onClick={handleLogout}
         >
