@@ -49,7 +49,14 @@ export function MemberLogin() {
     <>
       <Box marginTop={"130px"}>
         <Center>
-          <Card w={"lg"}>
+          <Card
+            w={"lg"}
+            bgGradient={[
+              "linear(to-tr, teal.300, yellow.400)",
+              "linear(to-t, blue.200, teal.500)",
+              "linear(to-b, orange.100, purple.300)",
+            ]}
+          >
             <CardHeader>
               <Heading>로그인</Heading>
             </CardHeader>

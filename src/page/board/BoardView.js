@@ -23,6 +23,11 @@ import {
   useDisclosure,
   useToast,
   Tooltip,
+  Center,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
 } from "@chakra-ui/react";
 import { LoginContext } from "../../component/LogInProvider";
 import { CommentContainer } from "../../component/CommentContainer";
@@ -139,49 +144,67 @@ export function BoardView() {
   return (
     <>
       <Box>
-        <Flex justifyContent={"space-between"}>
-          <Heading size={"xl"}>{board.id}글 보기</Heading>
-          <LikeContainer like={like} onClick={handleLike} />
-        </Flex>
-        <FormControl>
-          <FormLabel>제목</FormLabel>
-          {/* 수정 불가하도록 읽기 전용 */}
-          <Input value={board.title} readOnly />
-        </FormControl>
+        <Center>
+          <Card
+            w={"3xl"}
+            bgGradient={[
+              "linear(to-tr, teal.300, yellow.400)",
+              "linear(to-t, blue.200, teal.500)",
+              "linear(to-b, orange.100, purple.300)",
+            ]}
+          >
+            <CardHeader>
+              <Flex justifyContent={"space-between"}>
+                <Heading size={"xl"}>{board.id}글 보기</Heading>
+                <LikeContainer like={like} onClick={handleLike} />
+              </Flex>
+            </CardHeader>
+            <CardBody>
+              <FormControl mb={5}>
+                <FormLabel>제목</FormLabel>
+                {/* 수정 불가하도록 읽기 전용 */}
+                <Input value={board.title} readOnly />
+              </FormControl>
 
-        <FormControl>
-          <FormLabel>본문</FormLabel>
-          <Textarea value={board.content} readOnly></Textarea>
-        </FormControl>
-        {/* 파일 이미지 출력 */}
-        {board.files.map((file) => (
-          <Box my={"5px"} border={"3px solid black"}>
-            <Image width="100%" src={file.url} alt={file.name} />
-          </Box>
-        ))}
-        <FormControl>
-          <FormLabel>작성자</FormLabel>
-          <Input value={board.nickName} readOnly />
-        </FormControl>
-        <FormControl>
-          <FormLabel>작성일시</FormLabel>
-          <Input value={board.inserted} readOnly />
-        </FormControl>
-
-        {/* board.writer와 로그인 id와 동일할 경우에만 출력 */}
-        {(hasAccess(board.writer) || isAdmin()) && (
-          <Box>
-            <Button
-              colorScheme={"blue"}
-              onClick={() => navigate("/edit/" + id)}
-            >
-              수정
-            </Button>
-            <Button colorScheme={"red"} onClick={onOpen}>
-              삭제
-            </Button>
-          </Box>
-        )}
+              <FormControl mb={5}>
+                <FormLabel>본문</FormLabel>
+                <Textarea value={board.content} readOnly></Textarea>
+              </FormControl>
+              {/* 파일 이미지 출력 */}
+              {board.files.map((file) => (
+                <Card key={file.id} my={5}>
+                  <CardBody>
+                    <Image width="100%" src={file.url} alt={file.name} />
+                  </CardBody>
+                </Card>
+              ))}
+              <FormControl mb={5}>
+                <FormLabel>작성자</FormLabel>
+                <Input value={board.nickName} readOnly />
+              </FormControl>
+              <FormControl mb={5}>
+                <FormLabel>작성일시</FormLabel>
+                <Input value={board.inserted} readOnly />
+              </FormControl>
+            </CardBody>
+            <CardFooter>
+              {/* board.writer와 로그인 id와 동일할 경우에만 출력 */}
+              {(hasAccess(board.writer) || isAdmin()) && (
+                <Flex gap={2}>
+                  <Button
+                    colorScheme={"blue"}
+                    onClick={() => navigate("/edit/" + id)}
+                  >
+                    수정
+                  </Button>
+                  <Button colorScheme={"red"} onClick={onOpen}>
+                    삭제
+                  </Button>
+                </Flex>
+              )}
+            </CardFooter>
+          </Card>
+        </Center>
         {/* 삭제 모달 - Chackra UI */}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />

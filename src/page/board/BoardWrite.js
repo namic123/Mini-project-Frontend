@@ -2,9 +2,16 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Center,
+  Flex,
   FormControl,
   FormHelperText,
   FormLabel,
+  Heading,
   Input,
   Textarea,
   useToast,
@@ -64,50 +71,67 @@ export function BoardWrite() {
 
   return (
     <>
-      <Box>
-        <h1>게시물 작성</h1>
-        <Box>
-          <FormControl>
-            {/* 제목 폼*/}
-            <FormLabel>제목</FormLabel>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />{" "}
-            {/* 제목 상태 저장 */}
-          </FormControl>
-          <FormControl>
-            {/* 본문 폼 */}
-            <FormLabel>본문</FormLabel>
-            {/* 본문 상태 저장 */}
-            <Textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            ></Textarea>
-          </FormControl>
-          <FormControl>
-            <FormLabel>이미지</FormLabel>
-            <Input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(e) => setUploadFiles(e.target.files)}
-            />
-            <FormHelperText>
-              한 개 파일은 1MB 이내, 총 용량은 10MB 이내로 첨부하세요.
-            </FormHelperText>
-          </FormControl>
-          <Button
-            isDisabled={isSubmitting}
-            onClick={handleSubmit}
-            colorScheme={"blue"}
-          >
-            {" "}
-            {/* Submit post 전송 */}
-            저장
-          </Button>
-        </Box>
-      </Box>
+      <Flex justifyContent={"center"}>
+        <Card
+          width={"80%"}
+          bgGradient={[
+            "linear(to-tr, teal.300, yellow.400)",
+            "linear(to-t, blue.200, teal.500)",
+            "linear(to-b, orange.100, purple.300)",
+          ]}
+        >
+          <CardHeader>
+            <Heading>게시글 작성</Heading>
+          </CardHeader>
+          <CardBody>
+            <Box>
+              <FormControl mb={5}>
+                {/* 제목 폼*/}
+                <FormLabel>제목</FormLabel>
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />{" "}
+                {/* 제목 상태 저장 */}
+              </FormControl>
+              <FormControl mb={5}>
+                {/* 본문 폼 */}
+                <FormLabel>본문</FormLabel>
+                {/* 본문 상태 저장 */}
+                <Textarea
+                  h={"sm"}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                ></Textarea>
+              </FormControl>
+
+              <FormControl mb={5}>
+                <FormLabel>이미지</FormLabel>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => setUploadFiles(e.target.files)}
+                />
+                <FormHelperText>
+                  한 개 파일은 1MB 이내, 총 용량은 10MB 이내로 첨부하세요.
+                </FormHelperText>
+              </FormControl>
+            </Box>
+          </CardBody>
+          <CardFooter>
+            <Button
+              isDisabled={isSubmitting}
+              onClick={handleSubmit}
+              colorScheme={"blue"}
+            >
+              {" "}
+              {/* Submit post 전송 */}
+              저장
+            </Button>
+          </CardFooter>
+        </Card>
+      </Flex>
     </>
   );
 }

@@ -98,7 +98,14 @@ export function MemberView() {
   return (
     <>
       <Center marginTop={"130px"}>
-        <Card width={"lg"}>
+        <Card
+          width={"lg"}
+          bgGradient={[
+            "linear(to-tr, teal.300, yellow.400)",
+            "linear(to-t, blue.200, teal.500)",
+            "linear(to-b, orange.100, purple.300)",
+          ]}
+        >
           <CardHeader>
             <Heading>{member.id}님 정보</Heading>
           </CardHeader>

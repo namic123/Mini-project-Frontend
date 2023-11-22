@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Center,
   Flex,
   Heading,
   Modal,
@@ -24,6 +25,9 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { DeleteIcon, EditIcon, NotAllowedIcon } from "@chakra-ui/icons";
 import { LoginContext } from "./LogInProvider";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons/faPaperPlane";
 
 /* 댓글 입력 폼 */
 function CommentForm({ boardId, isSubmitting, onSubmit }) {
@@ -34,11 +38,27 @@ function CommentForm({ boardId, isSubmitting, onSubmit }) {
   }
 
   return (
-    <Box>
-      <Textarea value={comment} onChange={(e) => setComment(e.target.value)} />
-      <Button isDisabled={isSubmitting} onClick={handleSubmit}>
-        쓰기
-      </Button>
+    <Box mt={5} mb={7}>
+      <Flex>
+        <Textarea
+          placeholder="댓글 쓰기"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+        <Center isDisabled={isSubmitting} onClick={handleSubmit}>
+          <Button
+            h={"full"}
+            size={"lg"}
+            bgGradient={[
+              "linear(to-tr, teal.300, yellow.400)",
+              "linear(to-t, blue.200, teal.500)",
+              "linear(to-b, orange.100, purple.300)",
+            ]}
+          >
+            <FontAwesomeIcon icon={faPaperPlane} />
+          </Button>
+        </Center>
+      </Flex>
     </Box>
   );
 }
@@ -166,24 +186,33 @@ function CommentList({
   const { hasAccess } = useContext(LoginContext);
 
   return (
-    <Card>
-      <CardHeader>
-        <Heading size="md">댓글 리스트</Heading>
-      </CardHeader>
-      <CardBody>
-        <Stack divider={<StackDivider />} spacing="4">
-          {commentList.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              comment={comment}
-              setIsSubmitting={setIsSubmitting}
-              isSubmitting={isSubmitting}
-              onDeleteModalOpen={onDeleteModalOpen}
-            />
-          ))}
-        </Stack>
-      </CardBody>
-    </Card>
+    <Center>
+      <Card
+        w={"80%"}
+        bgGradient={[
+          "linear(to-tr, teal.300, yellow.400)",
+          "linear(to-t, blue.200, teal.500)",
+          "linear(to-b, orange.100, purple.300)",
+        ]}
+      >
+        <CardHeader>
+          <Heading size="md">댓글 리스트</Heading>
+        </CardHeader>
+        <CardBody>
+          <Stack divider={<StackDivider />} spacing="4">
+            {commentList.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                setIsSubmitting={setIsSubmitting}
+                isSubmitting={isSubmitting}
+                onDeleteModalOpen={onDeleteModalOpen}
+              />
+            ))}
+          </Stack>
+        </CardBody>
+      </Card>
+    </Center>
   );
 }
 
@@ -286,11 +315,15 @@ export function CommentContainer({ boardId }) {
   return (
     <Box>
       {isAuthenticated() && (
-        <CommentForm
-          boardId={boardId}
-          isSubmitting={isSubmitting}
-          onSubmit={handleSubmit}
-        />
+        <Center mt={"10px"}>
+          <Box w={"3xl"}>
+            <CommentForm
+              boardId={boardId}
+              isSubmitting={isSubmitting}
+              onSubmit={handleSubmit}
+            />
+          </Box>
+        </Center>
       )}
       <CommentList
         boardId={boardId}

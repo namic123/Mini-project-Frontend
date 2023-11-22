@@ -193,7 +193,14 @@ export function MemberSignup() {
 
   return (
     <Box>
-      <Card md={"lg"}>
+      <Card
+        md={"lg"}
+        bgGradient={[
+          "linear(to-tr, teal.300, yellow.400)",
+          "linear(to-t, blue.200, teal.500)",
+          "linear(to-b, orange.100, purple.300)",
+        ]}
+      >
         <CardHeader>
           <Heading>회원 가입</Heading>
         </CardHeader>
@@ -212,7 +219,16 @@ export function MemberSignup() {
                 }}
               />
               {/* 중복 검증 */}
-              <Button onClick={handleIdCheck}>중복확인</Button>
+              <Button
+                onClick={handleIdCheck}
+                bgGradient={[
+                  "linear(to-tr, teal.300, yellow.400)",
+                  "linear(to-t, blue.200, teal.500)",
+                  "linear(to-b, orange.100, purple.300)",
+                ]}
+              >
+                중복확인
+              </Button>
             </Flex>
             <FormErrorMessage>ID 중복체크를 해주세요.</FormErrorMessage>
           </FormControl>
@@ -228,7 +244,16 @@ export function MemberSignup() {
                 }}
               />
               {/* 중복 검증 */}
-              <Button onClick={handleNickNameCheck}>중복확인</Button>
+              <Button
+                bgGradient={[
+                  "linear(to-tr, teal.300, yellow.400)",
+                  "linear(to-t, blue.200, teal.500)",
+                  "linear(to-b, orange.100, purple.300)",
+                ]}
+                onClick={handleNickNameCheck}
+              >
+                중복확인
+              </Button>
             </Flex>
             <FormErrorMessage>nick name 중복 체크를 해주세요.</FormErrorMessage>
           </FormControl>
@@ -274,7 +299,16 @@ export function MemberSignup() {
               />
 
               {/* 중복 체크 검증 */}
-              <Button onClick={handleEmailCheck}>중복확인</Button>
+              <Button
+                bgGradient={[
+                  "linear(to-tr, teal.300, yellow.400)",
+                  "linear(to-t, blue.200, teal.500)",
+                  "linear(to-b, orange.100, purple.300)",
+                ]}
+                onClick={handleEmailCheck}
+              >
+                중복확인
+              </Button>
             </Flex>
             <FormErrorMessage>email 중복 체크를 해주세요.</FormErrorMessage>
           </FormControl>

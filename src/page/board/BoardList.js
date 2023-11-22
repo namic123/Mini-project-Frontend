@@ -59,7 +59,7 @@ function Pagination({ pageInfo }) {
 
   return (
     <>
-      <Center marginTop={"20px"} marginBottom={"30px"}>
+      <Center marginTop={"20px"}>
         <Box>
           {/* 이전 페이지 그룹이 있을 때만 출력 */}
           {pageInfo.prevPageNumber && (
