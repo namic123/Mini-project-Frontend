@@ -3,6 +3,7 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   Flex,
   Heading,
   Input,
@@ -57,34 +58,36 @@ function Pagination({ pageInfo }) {
 
   return (
     <>
-      <Box>
-        {/* 이전 페이지 그룹이 있을 때만 출력 */}
-        {pageInfo.prevPageNumber && (
-          <PageButton variant="ghost" pageNumber={pageInfo.prevPageNumber}>
-            <FontAwesomeIcon icon={faAngleLeft} />
-          </PageButton>
-        )}
+      <Center marginTop={"20px"} marginBottom={"30px"}>
+        <Box>
+          {/* 이전 페이지 그룹이 있을 때만 출력 */}
+          {pageInfo.prevPageNumber && (
+            <PageButton variant="ghost" pageNumber={pageInfo.prevPageNumber}>
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </PageButton>
+          )}
 
-        {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
-        {pageNumbers.map((pageNumber) => (
-          <PageButton
-            key={pageNumber}
-            // 현재페이지와 pageNumber요소가 일치할 경우 색 변경
-            variant={
-              pageNumber === pageInfo.currentPageNumber ? "solid" : "ghost"
-            }
-            pageNumber={pageNumber}
-          >
-            {pageNumber}
-          </PageButton>
-        ))}
-        {/* 이후 페이지 그룹이 있을 때만 출력 */}
-        {pageInfo.nextPageNumber && (
-          <PageButton variant="ghost" pageNumber={pageInfo.nextPageNumber}>
-            <FontAwesomeIcon icon={faAngleRight} />
-          </PageButton>
-        )}
-      </Box>
+          {/* 위 pageNumbers 배열에 저장된 번호를 map을 이용해 각각 UI를 그려주고 navigate 값을 설정한다. */}
+          {pageNumbers.map((pageNumber) => (
+            <PageButton
+              key={pageNumber}
+              // 현재페이지와 pageNumber요소가 일치할 경우 색 변경
+              variant={
+                pageNumber === pageInfo.currentPageNumber ? "solid" : "ghost"
+              }
+              pageNumber={pageNumber}
+            >
+              {pageNumber}
+            </PageButton>
+          ))}
+          {/* 이후 페이지 그룹이 있을 때만 출력 */}
+          {pageInfo.nextPageNumber && (
+            <PageButton variant="ghost" pageNumber={pageInfo.nextPageNumber}>
+              <FontAwesomeIcon icon={faAngleRight} />
+            </PageButton>
+          )}
+        </Box>
+      </Center>
     </>
   );
 }
