@@ -15,8 +15,6 @@ function LogInProvider({ children }) {
     axios.get("/api/member/login").then((response) => setLogin(response.data));
   }
 
-  console.log(login);
-
   /* 로그인 여부 확인 메서드 */
   function isAuthenticated() {
     return login !== "";

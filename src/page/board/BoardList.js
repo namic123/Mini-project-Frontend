@@ -25,6 +25,7 @@ import {
   faAngleLeft,
   faAngleRight,
   faImages,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 
 function PageButton({ variant, pageNumber, children }) {
@@ -107,18 +108,32 @@ function SearchComponent() {
   }
 
   return (
-    <Flex>
-      {/* 카테고리 별 검색 */}
-      <Select onChange={(e) => setCategory(e.target.value)}>
-        <option selected value="all">
-          전체
-        </option>
-        <option value="title">제목</option>
-        <option value="content">본문</option>
-      </Select>
-      <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} />
-      <Button onClick={handleSearch}>검색</Button>
-    </Flex>
+    <Center marginTop={"30px"}>
+      <Flex gap={1}>
+        {/* 카테고리 별 검색 */}
+        <Box>
+          <Select
+            width={"100px"}
+            defaultValue={"all"}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="all">전체</option>
+            <option value="title">제목</option>
+            <option value="content">본문</option>
+          </Select>
+        </Box>
+        <Box>
+          <Input
+            width={"290px"}
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+        </Box>
+        <Button onClick={handleSearch}>
+          <FontAwesomeIcon icon={faSearch} />
+        </Button>
+      </Flex>
+    </Center>
   );
 }
 /* 게시판 리스트 컴포넌트 */
@@ -152,7 +167,7 @@ export function BoardList() {
   return (
     <Box>
       <Heading margin={"20px"}>게시판 목록</Heading>
-      <Box>
+      <Box marginTop={"30px"}>
         <Table>
           <Thead>
             <Tr>

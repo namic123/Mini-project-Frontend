@@ -41,7 +41,7 @@ export function NavBar() {
   }
 
   return (
-    <Flex>
+    <Flex marginBottom={"20px"}>
       {/* 로그인 상태에 따른 버튼 출력 */}
       {/* 로그인 상태 isAuthenticated() && */}
       {/* 비로그인 상태 isAuthenticated() || */}
