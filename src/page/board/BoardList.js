@@ -196,14 +196,26 @@ export function BoardList() {
                 <Td>{board.ago}</Td>
                 <Td>
                   {board.commentNum > 0 && (
-                    <Badge>
+                    <Badge
+                      bgGradient={[
+                        "linear(to-tr, teal.300, yellow.400)",
+                        "linear(to-t, blue.200, teal.500)",
+                        "linear(to-b, orange.100, purple.300)",
+                      ]}
+                    >
                       <ChatIcon /> {board.commentNum}
                     </Badge>
                   )}
                 </Td>
                 <Td>
                   {board.countLike > 0 && (
-                    <Badge>
+                    <Badge
+                      bgGradient={[
+                        "linear(to-tr, teal.300, yellow.400)",
+                        "linear(to-t, blue.200, teal.500)",
+                        "linear(to-b, orange.100, purple.300)",
+                      ]}
+                    >
                       {board.countLike}
                       <FontAwesomeIcon icon={fullHeart} size="sm" />{" "}
                     </Badge>
@@ -211,7 +223,13 @@ export function BoardList() {
                 </Td>
                 <Td>
                   {board.countFile > 0 && (
-                    <Badge>
+                    <Badge
+                      bgGradient={[
+                        "linear(to-tr, teal.300, yellow.400)",
+                        "linear(to-t, blue.200, teal.500)",
+                        "linear(to-b, orange.100, purple.300)",
+                      ]}
+                    >
                       <FontAwesomeIcon icon={faImages} />
                       {board.countFile}
                     </Badge>
